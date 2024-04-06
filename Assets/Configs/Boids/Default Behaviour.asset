@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
   m_Name: Default Behaviour
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 12
   attraction_force: 5
-  attraction_range: 20
-  repulsion_force: 100
-  repulsion_range: 10
+  attraction_range: 30
+  repulsion_force: 70
+  repulsion_range: 8
   neighbour_detection_range: 10
-  align_force: 8
+  align_force: 20
   mouse_attraction_force: 0
