@@ -15,6 +15,9 @@ public class BoidBehaviourConfigAsset : ScriptableObject
     public float align_force;
 
     public float mouse_attraction_force;
+
+    public float wall_repulsion_range;
+    public float wall_repulsion_force;
     public BoidBehaviourConfig Bake()
     {
         return new BoidBehaviourConfig
@@ -27,6 +30,8 @@ public class BoidBehaviourConfigAsset : ScriptableObject
             neighbour_detection_range = neighbour_detection_range,
             align_force = align_force,
             mouse_attraction_force = mouse_attraction_force,
+            wall_repulsion_force = wall_repulsion_force,
+            wall_repulsion_range = wall_repulsion_range,
         };
     }
 }
@@ -43,5 +48,8 @@ public struct BoidBehaviourConfig
     public float align_force;
 
     public float mouse_attraction_force;
+
+    public float wall_repulsion_range;
+    public float wall_repulsion_force;
 
 }

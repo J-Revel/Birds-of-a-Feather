@@ -84,7 +84,8 @@ public partial class BoidMovementSystem : SystemBase
         float dt = SystemAPI.Time.DeltaTime;
 
         NativeParallelMultiHashMap<int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_grid;
-        float partition_size = SystemAPI.GetSingleton<GlobalConfig>().boid_partition_size;
+        float boids_partition_size = SystemAPI.GetSingleton<GlobalConfig>().boid_partition_size;
+        float collider_partition_size = SystemAPI.GetSingleton<GlobalConfig>().collider_partition_size;
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
 
@@ -92,7 +93,7 @@ public partial class BoidMovementSystem : SystemBase
             .WithNone<BoidPartitionCell>()
             .ForEach((EntityCommandBuffer command_buffer, Entity entity, in LocalTransform transform, in BoidState state, in BoidConfig config) =>
             {
-                int2 cell = (int2)(transform.Position.xz / partition_size);
+                int2 cell = (int2)(transform.Position.xz / boids_partition_size);
                 command_buffer.AddComponent<BoidPartitionCell>(entity, new BoidPartitionCell { partition = cell });
                 partition.Add(cell, entity);
             }).Schedule();
@@ -104,7 +105,7 @@ public partial class BoidMovementSystem : SystemBase
                 transform.Position += velocity * dt;
                 transform.Scale = display.display_scale;
                 transform.Rotation = quaternion.LookRotation(velocity, new float3(0, 1, 0));
-                int2 new_partition_cell = (int2)(transform.Position.xz / partition_size);
+                int2 new_partition_cell = (int2)(transform.Position.xz / boids_partition_size);
                 if (math.lengthsq(partition_cell.partition - new_partition_cell) > 0)
                 {
                     partition.Remove(partition_cell.partition, entity);
@@ -114,7 +115,7 @@ public partial class BoidMovementSystem : SystemBase
         var writer = partition.AsParallelWriter();
         Entities.WithName("Partition_Update").ForEach((Entity entity, in LocalTransform transform, in BoidState state) =>
         {
-            int2 cell = (int2)(transform.Position.xz / partition_size);
+            int2 cell = (int2)(transform.Position.xz / boids_partition_size);
             writer.Add(cell, entity);
         }).ScheduleParallel();
         Entities
@@ -125,8 +126,8 @@ public partial class BoidMovementSystem : SystemBase
                 float2 position = transform.Position.xz;
 
                 float max_range = config.config.neighbour_detection_range;
-                int2 min_partition = (int2)((position - max_range) / partition_size);
-                int2 max_partition = (int2)((position + max_range) / partition_size);
+                int2 min_partition = (int2)((position - max_range) / boids_partition_size);
+                int2 max_partition = (int2)((position + max_range) / boids_partition_size);
 
                 float2 neighbour_velocity_sum = float2.zero;
                 int neighbour_count = 0;
@@ -163,8 +164,8 @@ public partial class BoidMovementSystem : SystemBase
                 float2 position = transform.Position.xz;
 
                 float max_range = math.max(config.config.attraction_range, config.config.repulsion_range);
-                int2 min_partition = (int2)((position - max_range) / partition_size);
-                int2 max_partition = (int2)((position + max_range) / partition_size);
+                int2 min_partition = (int2)((position - max_range) / boids_partition_size);
+                int2 max_partition = (int2)((position + max_range) / boids_partition_size);
                 
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
@@ -184,6 +185,41 @@ public partial class BoidMovementSystem : SystemBase
                             if (distancesq < config.config.repulsion_range)
                             {
                                 state.acceleration += -direction * config.config.repulsion_force;
+                            }
+                        }
+                    }
+                }
+                if (math.all(neighbour_data.average_velocity != float2.zero))
+                    state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
+                state.velocity += math.normalize(mouse_position - position) * config.config.mouse_attraction_force;
+                state.velocity = state.velocity + state.acceleration * dt;
+                state.velocity = math.normalize(state.velocity) * config.config.speed;
+            }).ScheduleParallel();
+        Entities
+            .WithName("Segment_Collision")
+            .WithReadOnly(partition)
+            .ForEach((Entity entity, ref BoidState state, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
+            {
+                state.acceleration = new float2();
+                float2 position = transform.Position.xz;
+
+                float max_range = config.config.wall_repulsion_range;
+                int2 min_partition = (int2)((position - max_range) / collider_partition_size);
+                int2 max_partition = (int2)((position + max_range) / collider_partition_size);
+                
+                for (int i = min_partition.x; i <= max_partition.x; i++)
+                {
+                    for (int j = min_partition.y; j <= max_partition.y; j++)
+                    {
+                        foreach (Entity neighbour_entity in partition.GetValuesForKey(new int2(i, j)))
+                        {
+                            if (neighbour_entity == entity)
+                                continue;
+                            ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(neighbour_entity);
+                            float distance = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
+                            if (distance < config.config.wall_repulsion_range)
+                            {
+                                state.acceleration += segment.collision_normal.xz * config.config.wall_repulsion_force;
                             }
                         }
                     }

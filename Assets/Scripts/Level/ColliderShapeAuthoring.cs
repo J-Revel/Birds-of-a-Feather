@@ -87,11 +87,11 @@ public struct ColliderSegment: IComponentData
     public float3 start;
     public float3 end;
     public int2 partition;
-    public float DistanceFromPoint(float3 position)
+    public float DistanceFromPointSq(float3 position)
     {
         float3 segment_direction = end - start;
         float3 cross = math.cross(math.normalize(segment_direction), start - position);
-        return math.length(cross);
+        return math.lengthsq(cross);
     }
 
     public float3 collision_normal { get { return math.cross(end - start, new float3(0, 1, 0)); } }

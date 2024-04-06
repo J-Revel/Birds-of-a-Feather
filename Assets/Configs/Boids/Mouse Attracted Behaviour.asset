@@ -20,3 +20,5 @@ MonoBehaviour:
   neighbour_detection_range: 10
   align_force: 5
   mouse_attraction_force: 1
+  wall_repulsion_range: 5
+  wall_repulsion_force: 100
