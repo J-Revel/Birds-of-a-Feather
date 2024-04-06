@@ -29,9 +29,7 @@ public class BoidBehaviourConfigAsset : ScriptableObject
             mouse_attraction_force = mouse_attraction_force,
         };
     }
-
 }
-
 
 public struct BoidBehaviourConfig
 {

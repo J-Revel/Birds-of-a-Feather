@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e0169b2ed137f40a3caab35f0b07b2, type: 3}
   m_Name: Level 1
   m_EditorClassIdentifier: 
+  default_behaviour_config: {fileID: 11400000, guid: 61b936c30bae6bc4a8773d3ea307b174,
+    type: 2}
   left_click_action:
     action_type: 0
     behaviour_config: {fileID: 11400000, guid: fbcc9fb283c888c4780e54234e436eb8, type: 2}

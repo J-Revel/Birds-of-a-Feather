@@ -62,6 +62,10 @@ public partial class BoidSpawnerUpdateSystem: SystemBase
                 {
                     velocity = spawner.random.NextFloat2(-10.0f, 10.0f),
                 });
+                command_buffer.SetComponent<BoidConfig>(boid, new BoidConfig
+                {
+                    config = SystemAPI.GetSingleton<LevelConfig>().default_behaviour_config
+                });
             }
         }).Schedule();
     }

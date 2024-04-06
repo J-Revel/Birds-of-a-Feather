@@ -49,7 +49,6 @@ public struct PlayerActionConfig
     public SpawnBoidConfig spawn_config;
 }
 
-
 public struct LevelConfig: IComponentData
 {
     public BoidBehaviourConfig default_behaviour_config;
@@ -75,6 +74,21 @@ public partial class PlayerInputSystem: SystemBase
             }
         }
         else if(Input.GetMouseButtonUp(0))
+        {
+            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            {
+                command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.default_behaviour_config});
+            }
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            {
+                command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.right_behaviour_config });
+            }
+        }
+        else if(Input.GetMouseButtonUp(1))
         {
             foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
             {
