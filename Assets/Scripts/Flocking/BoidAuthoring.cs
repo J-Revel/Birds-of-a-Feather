@@ -116,9 +116,12 @@ public partial class BoidMovementSystem : SystemBase
             }).Schedule();
         Entities
             .WithName("Position_Update")
-            .ForEach((Entity entity, ref LocalTransform transform, ref BoidState state, ref BoidPartitionCell partition_cell, in BoidConfig config) =>
+            .ForEach((Entity entity, ref LocalTransform transform, ref BoidState state, ref BoidPartitionCell partition_cell, in BoidConfig config, in BoidDisplay display) =>
             {
-                transform.Position += new float3(state.velocity.x, 0, state.velocity.y) * dt;
+                float3 velocity = new float3(state.velocity.x, 0, state.velocity.y);
+                transform.Position += velocity * dt;
+                transform.Scale = display.display_scale;
+                transform.Rotation = quaternion.LookRotation(velocity, new float3(0, 1, 0));
                 int2 new_partition_cell = (int2)(transform.Position.xz / partition_size);
                 if (math.lengthsq(partition_cell.partition - new_partition_cell) > 0)
                 {
