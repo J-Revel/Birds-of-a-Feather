@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
+  m_Name: Mouse Attracted Behaviour
+  m_EditorClassIdentifier: 
+  speed: 20
+  attraction_force: 5
+  attraction_range: 20
+  repulsion_force: 100
+  repulsion_range: 10
+  neighbour_detection_range: 10
+  align_force: 5
+  mouse_attraction_force: 1
