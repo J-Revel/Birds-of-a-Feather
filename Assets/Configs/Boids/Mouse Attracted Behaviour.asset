@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
   m_Name: Mouse Attracted Behaviour
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 12
   attraction_force: 5
   attraction_range: 20
   repulsion_force: 100
