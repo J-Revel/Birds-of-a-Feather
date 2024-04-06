@@ -17,13 +17,14 @@ public struct BehaviourZone: IComponentData
     public BoidConfig config;
 }
 
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateBefore(typeof(BoidMovementSystem))]
 public partial class BehaviourZoneSystem: SystemBase
 {
     protected override void OnUpdate()
     {
         NativeParallelMultiHashMap<Unity.Mathematics.int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<BoidMovementSystem.Singleton>().partition_grid;
         float partition_size = SystemAPI.ManagedAPI.GetSingleton<BoidMovementSystem.Singleton>().partition_size;
-        Entities.ForEach((in BehaviourZone zone, in LocalTransform transform) =>
+        Entities.WithReadOnly(partition_grid).ForEach((in BehaviourZone zone, in LocalTransform transform) =>
         {
             float2 position = transform.Position.xz;
 
@@ -40,6 +41,6 @@ public partial class BehaviourZoneSystem: SystemBase
                     }
                 }
             }
-        }).Schedule();
+        }).Run();
     }
 }

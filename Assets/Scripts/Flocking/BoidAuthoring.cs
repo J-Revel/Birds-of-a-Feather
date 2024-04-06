@@ -34,6 +34,7 @@ public class BoidAuthoring : MonoBehaviour
                 repulsion_range = authoring.config.repulsion_range,
                 neighbour_detection_range = authoring.config.neighbour_detection_range,
                 align_force = authoring.config.align_force,
+                mouse_attraction_force = authoring.config.mouse_attraction_force,
             });
             AddComponent<BoidNeighbourData>(entity);
             AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
@@ -56,6 +57,8 @@ public struct BoidConfig: IComponentData
 
     public float neighbour_detection_range;
     public float align_force;
+
+    public float mouse_attraction_force;
 }
 
 public struct BoidState : IComponentData
@@ -75,7 +78,7 @@ public struct BoidNeighbourData : IComponentData
     public int neighbour_count;
 }
 
-[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateAfter(typeof(BehaviourZoneSystem))]
 public partial class BoidMovementSystem : SystemBase
 {
     public class Singleton : IComponentData
@@ -162,7 +165,10 @@ public partial class BoidMovementSystem : SystemBase
 
             }
         }).ScheduleParallel();
-        float2 mouse_position = ((float3)Input.mousePosition).xy;
+        float3 mouse_pos_screen = (float3)Input.mousePosition;
+        mouse_pos_screen.z = 10;
+        float2 mouse_position = ((float3)Camera.main.ScreenToWorldPoint(mouse_pos_screen)).xz;
+
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
@@ -174,6 +180,7 @@ public partial class BoidMovementSystem : SystemBase
                 float max_range = math.max(config.attraction_range, config.repulsion_range);
                 int2 min_partition = (int2)((position - max_range) / partition_size);
                 int2 max_partition = (int2)((position + max_range) / partition_size);
+                
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
@@ -198,6 +205,7 @@ public partial class BoidMovementSystem : SystemBase
                 }
                 if (math.all(neighbour_data.average_velocity != float2.zero))
                     state.acceleration += math.normalize(neighbour_data.average_velocity) * config.align_force;
+                state.velocity += math.normalize(mouse_position - position) * config.mouse_attraction_force;
                 state.velocity = state.velocity + state.acceleration * dt;
                 state.velocity = math.normalize(state.velocity) * config.speed;
             }).ScheduleParallel();

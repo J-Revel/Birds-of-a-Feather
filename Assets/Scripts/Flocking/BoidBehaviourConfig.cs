@@ -14,5 +14,7 @@ public class BoidBehaviourConfig : ScriptableObject
     public float neighbour_detection_range;
     public float align_force;
 
+    public float mouse_attraction_force;
+
 }
 
