@@ -120,4 +120,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 61b936c30bae6bc4a8773d3ea307b174, type: 2}
   start_direction_angle: 0
-  display_scale: 1
+  display_scale: 12
