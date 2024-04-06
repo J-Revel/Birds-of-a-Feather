@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e0169b2ed137f40a3caab35f0b07b2, type: 3}
+  m_Name: Level 3
+  m_EditorClassIdentifier: 
+  default_behaviour_config: {fileID: 11400000, guid: c3d35534d7abe1540a0c39b4933e81a5,
+    type: 2}
+  left_click_action:
+    action_type: 0
+    behaviour_config: {fileID: 11400000, guid: 3d00690b25d415849b126e9041caf218, type: 2}
+    spawn_config:
+      spawn_interval: 0
+      spawn_count: 0
+      spawn_radius: 0
+  right_click_action:
+    action_type: 0
+    behaviour_config: {fileID: 11400000, guid: e2cedad5a0bea204e8ae65890dd5d1ed, type: 2}
+    spawn_config:
+      spawn_interval: 0
+      spawn_count: 0
+      spawn_radius: 0
