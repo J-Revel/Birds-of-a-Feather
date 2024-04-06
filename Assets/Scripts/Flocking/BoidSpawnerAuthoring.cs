@@ -12,9 +12,11 @@ public class BoidSpawnerAuthoring : MonoBehaviour
     public float maxspawn = 10;
     public float countspawn = 0;
     public float angle_range = 30;
+    public int maxSpawn = 10;
+    public int countSpawn = 0;
     public BoidAuthoring prefab;
 
-    public class Baker: Baker<BoidSpawnerAuthoring>
+    public class Baker : Baker<BoidSpawnerAuthoring>
     {
         public override void Bake(BoidSpawnerAuthoring authoring)
         {
@@ -26,53 +28,49 @@ public class BoidSpawnerAuthoring : MonoBehaviour
                 prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
                 time = 0,
                 random = new Unity.Mathematics.Random(10),
-                maxspawn = authoring.maxspawn,
             });
         }
     }
 }
 
-public struct BoidSpawner: IComponentData
+public struct BoidSpawner : IComponentData
 {
     public float interval;
     public float angle_range;
     public Entity prefab;
     public float time;
     public Unity.Mathematics.Random random;
-    public float maxspawn;
-    public float countspawn;
 }
 
-public partial class BoidSpawnerUpdateSystem: SystemBase 
+public partial class BoidSpawnerUpdateSystem : SystemBase
 {
     protected override void OnUpdate()
     {
         float dt = SystemAPI.Time.DeltaTime;
         Entities.WithDeferredPlaybackSystem<EndSimulationEntityCommandBufferSystem>()
             .ForEach((EntityCommandBuffer command_buffer, ref BoidSpawner spawner, in LocalTransform transform) =>
-        {
-            spawner.time += dt;
-            if(spawner.time > spawner.interval && spawner.countspawn <= spawner.maxspawn)
             {
-                spawner.countspawn++;
-                spawner.time -= spawner.interval;
-                Entity boid = command_buffer.Instantiate(spawner.prefab);
-                command_buffer.SetComponent<LocalTransform>(boid, new LocalTransform
+                spawner.time += dt;
+                if (spawner.time > spawner.interval)
                 {
-                    Position = transform.Position,
-                    Rotation = transform.Rotation,
-                    Scale = 1,
-                });
+                    spawner.time -= spawner.interval;
+                    Entity boid = command_buffer.Instantiate(spawner.prefab);
+                    command_buffer.SetComponent<LocalTransform>(boid, new LocalTransform
+                    {
+                        Position = transform.Position,
+                        Rotation = transform.Rotation,
+                        Scale = 1,
+                    });
 
-                command_buffer.SetComponent<BoidState>(boid, new BoidState
-                {
-                    velocity = spawner.random.NextFloat2(-10.0f, 10.0f),
-                });
-                command_buffer.SetComponent<BoidConfig>(boid, new BoidConfig
-                {
-                    config = SystemAPI.GetSingleton<LevelConfig>().default_behaviour_config
-                });
-            }
-        }).Schedule();
+                    command_buffer.SetComponent<BoidState>(boid, new BoidState
+                    {
+                        velocity = spawner.random.NextFloat2(-10.0f, 10.0f),
+                    });
+                    command_buffer.SetComponent<BoidConfig>(boid, new BoidConfig
+                    {
+                        config = SystemAPI.GetSingleton<LevelConfig>().default_behaviour_config
+                    });
+                }
+            }).Schedule();
     }
 }
