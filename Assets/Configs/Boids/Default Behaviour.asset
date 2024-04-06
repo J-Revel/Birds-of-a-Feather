@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
   m_Name: Default Behaviour
   m_EditorClassIdentifier: 
-  speed: 12
+  speed: 16
   attraction_force: 3
   attraction_range: 50
   repulsion_force: 54.2
