@@ -39,8 +39,11 @@ public class ColliderShapeAuthoring : MonoBehaviour
             }
             for(int i=0; i<authoring.points.Length; i++)
             {
-                float2 A = ((float3)authoring.points[i]).xz;
-                float2 B = ((float3)authoring.points[(i+1)%authoring.points.Length]).xz;
+                float3 point = authoring.transform.TransformPoint(authoring.points[i]);
+                int next_point_index = (i + 1) % authoring.points.Length;
+                float3 next_point = authoring.transform.TransformPoint(authoring.points[next_point_index]);
+                float2 A = point.xz;
+                float2 B = next_point.xz;
                 List<float> splits = new List<float>();
                 splits.Add(0);
                 splits.Add(1);
