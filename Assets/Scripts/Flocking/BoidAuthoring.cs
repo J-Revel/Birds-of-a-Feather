@@ -68,7 +68,6 @@ public partial class BoidMovementSystem : SystemBase
     public class Singleton : IComponentData
     {
         public NativeParallelMultiHashMap<int2, Entity> partition_grid;
-        public float partition_size;
 
     }
 
@@ -77,7 +76,6 @@ public partial class BoidMovementSystem : SystemBase
         base.OnCreate();
         EntityManager.CreateSingleton<Singleton>(new Singleton { 
             partition_grid = new NativeParallelMultiHashMap<int2, Entity>(4096 * 4, Allocator.Persistent),
-            partition_size = 5
         });
     }
 
@@ -86,7 +84,7 @@ public partial class BoidMovementSystem : SystemBase
         float dt = SystemAPI.Time.DeltaTime;
 
         NativeParallelMultiHashMap<int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_grid;
-        float partition_size = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_size;
+        float partition_size = SystemAPI.GetSingleton<GlobalConfig>().boid_partition_size;
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
 

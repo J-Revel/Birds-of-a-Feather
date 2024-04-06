@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-public class GlobalConfigAsset : MonoBehaviour
+[CreateAssetMenu]
+public class GlobalConfigAsset :ScriptableObject 
 {
     public float boid_partition_size = 5;
     public float collider_partition_size = 30;

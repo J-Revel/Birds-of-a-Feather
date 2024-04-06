@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GlobalConfigAuthoring : MonoBehaviour
 {
-    GlobalConfigAsset config;
+    public GlobalConfigAsset config;
 
     public class Baker: Baker<GlobalConfigAuthoring>
     {
