@@ -197,7 +197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26793b0d03e1dc4b8349df29d59200c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 0.1
+  interval: 0.01
+  maxspawn: 100
+  countspawn: 0
   angle_range: 30
   prefab: {fileID: 8730065666613825573, guid: 82eb7fc6af24547428a1edb65bf482dc, type: 3}
 --- !u!4 &905682732
