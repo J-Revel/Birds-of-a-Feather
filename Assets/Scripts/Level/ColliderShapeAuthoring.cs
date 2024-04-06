@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Rendering;
 using UnityEngine;
 
 public class ColliderShapeAuthoring : MonoBehaviour
@@ -91,10 +92,18 @@ public struct ColliderSegment: IComponentData
     {
         float3 segment_direction = end - start;
         float3 cross = math.cross(math.normalize(segment_direction), start - position);
-        return math.lengthsq(cross);
+        if (math.dot(end - start, position - start) > 0 && math.dot(start - end, position - end) > 0)
+        {
+            return math.lengthsq(cross);
+        }
+        else return math.min(math.lengthsq(position - start), math.lengthsq(position - end));
     }
 
-    public float3 collision_normal { get { return math.cross(end - start, new float3(0, 1, 0)); } }
+    public float3 CollisionNormal(float3 position){
+        float3 vertical_vector = math.cross(end - start, position - start);
+        
+        return math.normalize(math.cross(end - start, vertical_vector)); 
+    }
 }
 
 public struct SegmentPartitionTag: IComponentData { }

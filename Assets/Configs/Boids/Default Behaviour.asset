@@ -15,10 +15,10 @@ MonoBehaviour:
   speed: 12
   attraction_force: 3
   attraction_range: 50
-  repulsion_force: 50
-  repulsion_range: 4
+  repulsion_force: 54.2
+  repulsion_range: 10
   neighbour_detection_range: 10
   align_force: 20
   mouse_attraction_force: 0
-  wall_repulsion_range: 5
-  wall_repulsion_force: 100
+  wall_repulsion_range: 50
+  wall_repulsion_force: 1000

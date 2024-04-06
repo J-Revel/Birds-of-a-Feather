@@ -88,6 +88,7 @@ public partial class BoidMovementSystem : SystemBase
         float collider_partition_size = SystemAPI.GetSingleton<GlobalConfig>().collider_partition_size;
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
+        NativeParallelMultiHashMap<int2, Entity> wall_partition = SystemAPI.ManagedAPI.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid;
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
             .WithNone<BoidPartitionCell>()
@@ -158,6 +159,7 @@ public partial class BoidMovementSystem : SystemBase
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
+            .WithReadOnly(wall_partition)
             .ForEach((Entity entity, ref BoidState state, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
             {
                 state.acceleration = new float2();
@@ -189,29 +191,15 @@ public partial class BoidMovementSystem : SystemBase
                         }
                     }
                 }
-                if (math.all(neighbour_data.average_velocity != float2.zero))
-                    state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
-                state.velocity += math.normalize(mouse_position - position) * config.config.mouse_attraction_force;
-                state.velocity = state.velocity + state.acceleration * dt;
-                state.velocity = math.normalize(state.velocity) * config.config.speed;
-            }).ScheduleParallel();
-        Entities
-            .WithName("Segment_Collision")
-            .WithReadOnly(partition)
-            .ForEach((Entity entity, ref BoidState state, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
-            {
-                state.acceleration = new float2();
-                float2 position = transform.Position.xz;
-
-                float max_range = config.config.wall_repulsion_range;
-                int2 min_partition = (int2)((position - max_range) / collider_partition_size);
-                int2 max_partition = (int2)((position + max_range) / collider_partition_size);
+                max_range = config.config.wall_repulsion_range;
+                min_partition = (int2)((position - max_range) / collider_partition_size);
+                max_partition = (int2)((position + max_range) / collider_partition_size);
                 
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
                     {
-                        foreach (Entity neighbour_entity in partition.GetValuesForKey(new int2(i, j)))
+                        foreach (Entity neighbour_entity in wall_partition.GetValuesForKey(new int2(i, j)))
                         {
                             if (neighbour_entity == entity)
                                 continue;
@@ -219,7 +207,7 @@ public partial class BoidMovementSystem : SystemBase
                             float distance = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
                             if (distance < config.config.wall_repulsion_range)
                             {
-                                state.acceleration += segment.collision_normal.xz * config.config.wall_repulsion_force;
+                                state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force;
                             }
                         }
                     }

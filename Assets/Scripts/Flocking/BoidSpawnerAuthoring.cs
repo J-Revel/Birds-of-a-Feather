@@ -48,6 +48,7 @@ public partial class BoidSpawnerUpdateSystem : SystemBase
     protected override void OnUpdate()
     {
         float dt = SystemAPI.Time.DeltaTime;
+        LevelConfig level_config = SystemAPI.GetSingleton<LevelConfig>();
         Entities.WithDeferredPlaybackSystem<EndSimulationEntityCommandBufferSystem>()
             .ForEach((EntityCommandBuffer command_buffer, ref BoidSpawner spawner, in LocalTransform transform) =>
             {
@@ -70,7 +71,7 @@ public partial class BoidSpawnerUpdateSystem : SystemBase
                     });
                     command_buffer.SetComponent<BoidConfig>(boid, new BoidConfig
                     {
-                        config = SystemAPI.GetSingleton<LevelConfig>().default_behaviour_config
+                        config = level_config.default_behaviour_config
                     });
                 }
             }).Schedule();
