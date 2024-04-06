@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: SpreadingBehaviour
   m_EditorClassIdentifier: 
   speed: 12
-  attraction_force: 5
+  attraction_force: 0
   attraction_range: 20
-  repulsion_force: 100
-  repulsion_range: 5
+  repulsion_force: 70
+  repulsion_range: 8
   neighbour_detection_range: 10
-  align_force: 1
-  mouse_attraction_force: 1
+  align_force: 0
+  mouse_attraction_force: 0
   wall_repulsion_range: 5
   wall_repulsion_force: 100
