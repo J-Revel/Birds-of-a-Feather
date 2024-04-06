@@ -7,6 +7,8 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static Unity.Entities.SystemBaseDelegates;
+using static UnityEngine.GraphicsBuffer;
 
 public class BoidAuthoring : MonoBehaviour
 {
@@ -216,7 +218,8 @@ public partial class BoidMovementSystem : SystemBase
                     state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
                 state.velocity += math.normalize(mouse_position - position) * config.config.mouse_attraction_force;
                 state.velocity = state.velocity + state.acceleration * dt;
-                state.velocity = math.normalize(state.velocity) * config.config.speed;
+                var targetvelocity = math.normalize(state.velocity) * config.config.speed;
+                state.velocity = (new float2(0.9) * state.velocity + new float2(0.1) * targetvelocity);
             }).ScheduleParallel();
     }
 }
