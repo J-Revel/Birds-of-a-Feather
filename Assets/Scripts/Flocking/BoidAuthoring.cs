@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class BoidAuthoring : MonoBehaviour
 {
-    public BoidBehaviourConfig config;
+    public BoidBehaviourConfigAsset config;
     public float start_direction_angle;
     public float display_scale = 1;
 
@@ -27,14 +27,7 @@ public class BoidAuthoring : MonoBehaviour
                 });
             AddComponent<BoidConfig>(entity, new BoidConfig
             {
-                speed = authoring.config.speed,
-                attraction_force = authoring.config.attraction_force,
-                attraction_range = authoring.config.attraction_range,
-                repulsion_force = authoring.config.repulsion_force,
-                repulsion_range = authoring.config.repulsion_range,
-                neighbour_detection_range = authoring.config.neighbour_detection_range,
-                align_force = authoring.config.align_force,
-                mouse_attraction_force = authoring.config.mouse_attraction_force,
+                config = authoring.config.Bake(),
             });
             AddComponent<BoidNeighbourData>(entity);
             AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
@@ -49,16 +42,7 @@ public struct BoidDisplay : IComponentData
 
 public struct BoidConfig: IComponentData
 {
-    public float speed;
-    public float attraction_force;
-    public float attraction_range;
-    public float repulsion_force;
-    public float repulsion_range;
-
-    public float neighbour_detection_range;
-    public float align_force;
-
-    public float mouse_attraction_force;
+    public BoidBehaviourConfig config;
 }
 
 public struct BoidState : IComponentData
@@ -142,7 +126,7 @@ public partial class BoidMovementSystem : SystemBase
             {
                 float2 position = transform.Position.xz;
 
-                float max_range = config.neighbour_detection_range;
+                float max_range = config.config.neighbour_detection_range;
                 int2 min_partition = (int2)((position - max_range) / partition_size);
                 int2 max_partition = (int2)((position + max_range) / partition_size);
 
@@ -180,7 +164,7 @@ public partial class BoidMovementSystem : SystemBase
                 state.acceleration = new float2();
                 float2 position = transform.Position.xz;
 
-                float max_range = math.max(config.attraction_range, config.repulsion_range);
+                float max_range = math.max(config.config.attraction_range, config.config.repulsion_range);
                 int2 min_partition = (int2)((position - max_range) / partition_size);
                 int2 max_partition = (int2)((position + max_range) / partition_size);
                 
@@ -195,22 +179,22 @@ public partial class BoidMovementSystem : SystemBase
                             float2 neighbour_position = SystemAPI.GetComponent<LocalTransform>(neighbour_entity).Position.xz;
                             float2 direction = math.all(neighbour_position == position) ? float2.zero : math.normalize(neighbour_position - position);
                             float distancesq = math.distancesq(position, neighbour_position);
-                            if (distancesq < config.attraction_range)
+                            if (distancesq < config.config.attraction_range)
                             {
-                                state.acceleration += direction * config.attraction_force;
+                                state.acceleration += direction * config.config.attraction_force;
                             }
-                            if (distancesq < config.repulsion_range)
+                            if (distancesq < config.config.repulsion_range)
                             {
-                                state.acceleration += -direction * config.repulsion_force;
+                                state.acceleration += -direction * config.config.repulsion_force;
                             }
                         }
                     }
                 }
                 if (math.all(neighbour_data.average_velocity != float2.zero))
-                    state.acceleration += math.normalize(neighbour_data.average_velocity) * config.align_force;
-                state.velocity += math.normalize(mouse_position - position) * config.mouse_attraction_force;
+                    state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
+                state.velocity += math.normalize(mouse_position - position) * config.config.mouse_attraction_force;
                 state.velocity = state.velocity + state.acceleration * dt;
-                state.velocity = math.normalize(state.velocity) * config.speed;
+                state.velocity = math.normalize(state.velocity) * config.config.speed;
             }).ScheduleParallel();
     }
 }

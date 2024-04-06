@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
-  m_Name: Default Behaviour
+  m_Name: Mouse Attracted Behaviour
   m_EditorClassIdentifier: 
   speed: 20
   attraction_force: 5
@@ -19,4 +19,4 @@ MonoBehaviour:
   repulsion_range: 10
   neighbour_detection_range: 10
   align_force: 5
-  mouse_attraction_force: 0
+  mouse_attraction_force: 1
