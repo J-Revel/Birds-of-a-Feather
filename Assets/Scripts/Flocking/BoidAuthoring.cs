@@ -12,6 +12,7 @@ public class BoidAuthoring : MonoBehaviour
 {
     public BoidBehaviourConfig config;
     public float start_direction_angle;
+    public float display_scale = 1;
 
     public class Baker: Baker<BoidAuthoring>
     {
@@ -35,8 +36,14 @@ public class BoidAuthoring : MonoBehaviour
                 align_force = authoring.config.align_force,
             });
             AddComponent<BoidNeighbourData>(entity);
+            AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
         }
     }
+}
+
+public struct BoidDisplay : IComponentData
+{
+    public float display_scale;
 }
 
 public struct BoidConfig: IComponentData
@@ -70,22 +77,30 @@ public struct BoidNeighbourData: IComponentData
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 public partial class BoidMovementSystem: SystemBase
 {
-    public NativeParallelMultiHashMap<int2, Entity> partition_grid;
-    public float partition_size = 5;
+    public class Singleton : IComponentData
+    {
+        public NativeParallelMultiHashMap<int2, Entity> partition_grid;
+        public float partition_size;
+
+    }
 
     protected override void OnCreate()
     {
         base.OnCreate();
-        partition_grid = new NativeParallelMultiHashMap<int2, Entity>(4096 * 4, Allocator.Persistent);
+        EntityManager.CreateSingleton<Singleton>(new Singleton { 
+            partition_grid = new NativeParallelMultiHashMap<int2, Entity>(4096 * 4, Allocator.Persistent),
+            partition_size = 5
+        });
     }
 
     protected override void OnUpdate()
     {
         float dt = SystemAPI.Time.DeltaTime;
 
+        NativeParallelMultiHashMap<int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_grid;
+        float partition_size = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_size;
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
-        float partition_size = this.partition_size;
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
             .WithNone<BoidPartitionCell>()
@@ -146,6 +161,7 @@ public partial class BoidMovementSystem: SystemBase
 
             }
         }).ScheduleParallel();
+        float2 mouse_position = ((float3)Input.mousePosition).xy;
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
