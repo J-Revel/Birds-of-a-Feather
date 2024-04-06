@@ -118,11 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f5bfe2985acc8458add8a102330d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  config: {fileID: 11400000, guid: 61b936c30bae6bc4a8773d3ea307b174, type: 2}
   start_direction_angle: 0
-  attraction_force: 10
-  attraction_range: 10
-  repulsion_force: 100
-  repulsion_range: 5
-  neighbour_detection_range: 10
-  align_force: 5

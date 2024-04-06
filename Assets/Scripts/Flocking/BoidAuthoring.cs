@@ -10,22 +10,15 @@ using UnityEngine;
 
 public class BoidAuthoring : MonoBehaviour
 {
-    public float speed;
+    public BoidBehaviourConfig config;
     public float start_direction_angle;
-
-    public float attraction_force;
-    public float attraction_range;
-    public float repulsion_force;
-    public float repulsion_range;
-
-    public float neighbour_detection_range;
-    public float align_force;
 
     public class Baker: Baker<BoidAuthoring>
     {
         public override void Bake(BoidAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+            DependsOn(authoring.config);
             AddComponent<BoidState>(entity,
                 new BoidState 
                 {
@@ -33,13 +26,13 @@ public class BoidAuthoring : MonoBehaviour
                 });
             AddComponent<BoidConfig>(entity, new BoidConfig
             {
-                speed = authoring.speed,
-                attraction_force = authoring.attraction_force,
-                attraction_range = authoring.attraction_range,
-                repulsion_force = authoring.repulsion_force,
-                repulsion_range = authoring.repulsion_range,
-                neighbour_detection_range = authoring.neighbour_detection_range,
-                align_force = authoring.align_force,
+                speed = authoring.config.speed,
+                attraction_force = authoring.config.attraction_force,
+                attraction_range = authoring.config.attraction_range,
+                repulsion_force = authoring.config.repulsion_force,
+                repulsion_range = authoring.config.repulsion_range,
+                neighbour_detection_range = authoring.config.neighbour_detection_range,
+                align_force = authoring.config.align_force,
             });
             AddComponent<BoidNeighbourData>(entity);
         }
