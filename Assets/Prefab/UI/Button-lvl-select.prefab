@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "niveau n\xB03"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c2db5716482f81e44b592afdf19e080e, type: 2}
-  m_sharedMaterial: {fileID: 1278961319704127741, guid: c2db5716482f81e44b592afdf19e080e,
+  m_fontAsset: {fileID: 11400000, guid: a3258b6bf777abc4d816ea6df4a173c3, type: 2}
+  m_sharedMaterial: {fileID: 306820904469202649, guid: a3258b6bf777abc4d816ea6df4a173c3,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
