@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26793b0d03e1dc4b8349df29d59200c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interval: 1
+  interval: 0.1
   angle_range: 30
   prefab: {fileID: 8730065666613825573, guid: 82eb7fc6af24547428a1edb65bf482dc, type: 3}
 --- !u!4 &905682732
@@ -250,6 +250,7 @@ MonoBehaviour:
   - {x: 3, y: 0, z: 3}
   - {x: 0, y: 0, z: 3}
   thickness: 0
+  global_config: {fileID: 0}
 --- !u!4 &2002955718
 Transform:
   m_ObjectHideFlags: 0
