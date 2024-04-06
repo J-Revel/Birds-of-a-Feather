@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
@@ -21,7 +22,8 @@ public class BoidSpawnerAuthoring : MonoBehaviour
                 angle_range = authoring.angle_range,
                 interval = authoring.interval,
                 prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
-                time = 0
+                time = 0,
+                random = new Unity.Mathematics.Random(10),
             });
         }
     }
@@ -33,6 +35,7 @@ public struct BoidSpawner: IComponentData
     public float angle_range;
     public Entity prefab;
     public float time;
+    public Unity.Mathematics.Random random;
 }
 
 public partial class BoidSpawnerUpdateSystem: SystemBase 
@@ -54,7 +57,11 @@ public partial class BoidSpawnerUpdateSystem: SystemBase
                     Rotation = transform.Rotation,
                     Scale = 1,
                 });
-                command_buffer.SetComponent<BoidState>(boid, new BoidState { velocity = new float2(transform.Forward().xz)});
+
+                command_buffer.SetComponent<BoidState>(boid, new BoidState
+                {
+                    velocity = spawner.random.NextFloat2(-10.0f, 10.0f),
+                });
             }
         }).Schedule();
     }
