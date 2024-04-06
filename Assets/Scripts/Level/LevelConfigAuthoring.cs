@@ -13,6 +13,10 @@ public class LevelConfigAuthoring: MonoBehaviour
         public override void Bake(LevelConfigAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.None);
+            DependsOn(authoring.config_asset);
+            DependsOn(authoring.config_asset.default_behaviour_config);
+            DependsOn(authoring.config_asset.left_click_action.behaviour_config);
+            DependsOn(authoring.config_asset.right_click_action.behaviour_config);
             AddComponent(entity, new LevelConfig
             {
                 default_behaviour_config = authoring.config_asset.default_behaviour_config.Bake(),

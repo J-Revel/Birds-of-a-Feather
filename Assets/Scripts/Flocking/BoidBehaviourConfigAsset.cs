@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class BoidBehaviourConfigAsset : ScriptableObject 
 {
+    public float radius;
     public float speed;
     public float attraction_force;
     public float attraction_range;
@@ -22,6 +23,7 @@ public class BoidBehaviourConfigAsset : ScriptableObject
     {
         return new BoidBehaviourConfig
         {
+            radius = radius,
             speed = speed,
             attraction_force = attraction_force,
             attraction_range = attraction_range,
@@ -38,6 +40,7 @@ public class BoidBehaviourConfigAsset : ScriptableObject
 
 public struct BoidBehaviourConfig
 {
+    public float radius;
     public float speed;
     public float attraction_force;
     public float attraction_range;

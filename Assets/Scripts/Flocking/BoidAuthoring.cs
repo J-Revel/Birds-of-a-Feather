@@ -53,7 +53,8 @@ public struct BoidState : IComponentData
 
 public struct BoidPartitionCell : IComponentData
 {
-    public int2 partition;
+    public int2 min_partition;
+    public int2 max_partition;
 }
 
 public struct BoidNeighbourData : IComponentData
@@ -94,9 +95,21 @@ public partial class BoidMovementSystem : SystemBase
             .WithNone<BoidPartitionCell>()
             .ForEach((EntityCommandBuffer command_buffer, Entity entity, in LocalTransform transform, in BoidState state, in BoidConfig config) =>
             {
-                int2 cell = (int2)(transform.Position.xz / boids_partition_size);
-                command_buffer.AddComponent<BoidPartitionCell>(entity, new BoidPartitionCell { partition = cell });
-                partition.Add(cell, entity);
+                int2 cell_min = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
+                int2 cell_max = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
+
+
+                command_buffer.AddComponent<BoidPartitionCell>(entity, new BoidPartitionCell {
+                    min_partition = cell_min,
+                    max_partition = cell_max,
+                });
+                for(int i=cell_min.x; i<=cell_max.x; i++)
+                {
+                    for(int j=cell_min.y; j<=cell_max.y; j++)
+                    {
+                        partition.Add(new int2(i, j), entity);
+                    }
+                }
             }).Schedule();
         Entities
             .WithName("Position_Update")
@@ -106,11 +119,23 @@ public partial class BoidMovementSystem : SystemBase
                 transform.Position += velocity * dt;
                 transform.Scale = display.display_scale;
                 transform.Rotation = quaternion.LookRotation(velocity, new float3(0, 1, 0));
-                int2 new_partition_cell = (int2)(transform.Position.xz / boids_partition_size);
-                if (math.lengthsq(partition_cell.partition - new_partition_cell) > 0)
+                int2 new_partition_cell_min = (int2)((transform.Position.xz - config.config.radius) / boids_partition_size);
+                int2 new_partition_cell_max = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
+                for(int i=partition_cell.min_partition.x; i<=partition_cell.max_partition.x; i++)
                 {
-                    partition.Remove(partition_cell.partition, entity);
-                    partition.Add(new_partition_cell, entity);
+                    for (int j = partition_cell.min_partition.y; j <= partition_cell.max_partition.y; j++)
+                    {
+                        if(i < new_partition_cell_min.x || i > new_partition_cell_max.x || j < new_partition_cell_min.y || j > new_partition_cell_max.y)
+                            partition.Remove(new int2(i, j), entity);
+                    }
+                }
+                for(int i= new_partition_cell_min.x; i<=new_partition_cell_max.x; i++)
+                {
+                    for (int j = new_partition_cell_min.y; j <= new_partition_cell_max.y; j++)
+                    {
+                        if(i < partition_cell.min_partition.x || i > partition_cell.max_partition.x || j < partition_cell.min_partition.y || j > partition_cell.max_partition.y)
+                            partition.Add(new int2(i, j), entity);
+                    }
                 }
             }).Schedule();
         var writer = partition.AsParallelWriter();
@@ -132,14 +157,16 @@ public partial class BoidMovementSystem : SystemBase
 
                 float2 neighbour_velocity_sum = float2.zero;
                 int neighbour_count = 0;
+                NativeHashSet<Entity> handled_neighbours = new NativeHashSet<Entity>(64, Allocator.Temp);
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
                     {
                         foreach (Entity neighbour_entity in partition.GetValuesForKey(new int2(i, j)))
                         {
-                            if (neighbour_entity == entity)
+                            if (neighbour_entity == entity || handled_neighbours.Contains(neighbour_entity))
                                 continue;
+                            handled_neighbours.Add(neighbour_entity);
                             neighbour_velocity_sum += SystemAPI.GetComponent<BoidState>(neighbour_entity).velocity;
                             neighbour_count++;
                         }
@@ -166,8 +193,9 @@ public partial class BoidMovementSystem : SystemBase
                 float2 position = transform.Position.xz;
 
                 float max_range = math.max(config.config.attraction_range, config.config.repulsion_range);
-                int2 min_partition = (int2)((position - max_range) / boids_partition_size);
-                int2 max_partition = (int2)((position + max_range) / boids_partition_size);
+                int2 min_partition = (int2)((position - config.config.radius - max_range) / boids_partition_size);
+                int2 max_partition = (int2)((position + config.config.radius + max_range) / boids_partition_size);
+                NativeHashSet<Entity> handled_neighbours = new NativeHashSet<Entity>(64, Allocator.Temp);
                 
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
@@ -175,16 +203,20 @@ public partial class BoidMovementSystem : SystemBase
                     {
                         foreach (Entity neighbour_entity in partition.GetValuesForKey(new int2(i, j)))
                         {
-                            if (neighbour_entity == entity)
+                            BoidConfig neighbour_config = SystemAPI.GetComponent<BoidConfig>(neighbour_entity);
+                            if (neighbour_entity == entity || handled_neighbours.Contains(neighbour_entity))
                                 continue;
+                            handled_neighbours.Add(neighbour_entity);
                             float2 neighbour_position = SystemAPI.GetComponent<LocalTransform>(neighbour_entity).Position.xz;
                             float2 direction = math.all(neighbour_position == position) ? float2.zero : math.normalize(neighbour_position - position);
                             float distancesq = math.distancesq(position, neighbour_position);
-                            if (distancesq < config.config.attraction_range)
+                            float active_attraction_range = config.config.attraction_range + config.config.radius + neighbour_config.config.radius;
+                            float active_repulsion_range = config.config.repulsion_range + config.config.radius + neighbour_config.config.radius;
+                            if (distancesq < active_attraction_range * active_attraction_range)
                             {
                                 state.acceleration += direction * config.config.attraction_force;
                             }
-                            if (distancesq < config.config.repulsion_range)
+                            if (distancesq < active_repulsion_range * active_repulsion_range)
                             {
                                 state.acceleration += -direction * config.config.repulsion_force;
                             }
@@ -199,11 +231,11 @@ public partial class BoidMovementSystem : SystemBase
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
                     {
-                        foreach (Entity neighbour_entity in wall_partition.GetValuesForKey(new int2(i, j)))
+                        foreach (Entity wall_entity in wall_partition.GetValuesForKey(new int2(i, j)))
                         {
-                            if (neighbour_entity == entity)
+                            if (wall_entity == entity)
                                 continue;
-                            ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(neighbour_entity);
+                            ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity);
                             float distance = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
                             if (distance < config.config.wall_repulsion_range)
                             {
@@ -214,7 +246,11 @@ public partial class BoidMovementSystem : SystemBase
                 }
                 if (math.all(neighbour_data.average_velocity != float2.zero))
                     state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
-                state.velocity += math.normalize(mouse_position - position) * config.config.mouse_attraction_force;
+                float2 mouse_direction = mouse_position - position;
+                float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);
+                float3 cross = math.normalize(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
+                float3 force_direction = math.cross(cross, velocity_3D);
+                state.velocity += force_direction.xz * config.config.mouse_attraction_force;
                 state.velocity = state.velocity + state.acceleration * dt;
                 state.velocity = math.normalize(state.velocity) * config.config.speed;
             }).ScheduleParallel();
