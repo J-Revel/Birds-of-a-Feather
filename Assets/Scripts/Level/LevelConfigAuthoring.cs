@@ -72,14 +72,14 @@ public partial class PlayerInputSystem: SystemBase
         EntityCommandBuffer command_buffer = new EntityCommandBuffer(Allocator.Temp);
         if(Input.GetMouseButtonDown(0))
         {
-            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            foreach(Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.left_behaviour_config });
             }
         }
         else if(Input.GetMouseButtonUp(0))
         {
-            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            foreach(Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.default_behaviour_config});
             }
@@ -87,14 +87,14 @@ public partial class PlayerInputSystem: SystemBase
 
         if(Input.GetMouseButtonDown(1))
         {
-            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            foreach(Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.right_behaviour_config });
             }
         }
         else if(Input.GetMouseButtonUp(1))
         {
-            foreach(Entity entity in Entities.WithAll<BoidConfig>().ToQuery().ToEntityArray(Allocator.Temp))
+            foreach(Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.default_behaviour_config});
             }

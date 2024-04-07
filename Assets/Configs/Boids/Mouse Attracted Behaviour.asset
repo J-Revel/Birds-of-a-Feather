@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Mouse Attracted Behaviour
   m_EditorClassIdentifier: 
   radius: 0
-  speed: 16
+  speed: 20
   attraction_force: 5
   attraction_range: 4.472136
   repulsion_force: 100
-  repulsion_range: 3.162278
+  repulsion_range: 5
   neighbour_detection_range: 10
-  align_force: 5
+  align_force: 20
   mouse_attraction_force: 0.03
   wall_repulsion_range: 7.071068
-  wall_repulsion_force: 10
+  wall_repulsion_force: 1000

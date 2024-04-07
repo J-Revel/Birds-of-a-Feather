@@ -105,7 +105,7 @@ public struct ColliderSegment: IComponentData
     public float3 CollisionNormal(float3 position){
         float3 vertical_vector = math.cross(end - start, position - start);
         
-        return math.normalize(math.cross(end - start, vertical_vector)); 
+        return math.normalizesafe(math.cross(end - start, vertical_vector)); 
     }
 }
 
