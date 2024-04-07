@@ -12,13 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
   m_Name: Level3Mouse 1
   m_EditorClassIdentifier: 
+  radius: 0
   speed: 40
   attraction_force: 20
-  attraction_range: 80
+  attraction_range: 8.944272
   repulsion_force: 80
-  repulsion_range: 40
+  repulsion_range: 6.3245554
   neighbour_detection_range: 10
   align_force: 4
   mouse_attraction_force: 5
-  wall_repulsion_range: 50
-  wall_repulsion_force: 1000
+  wall_repulsion_range: 7.071068
+  wall_repulsion_force: 10
