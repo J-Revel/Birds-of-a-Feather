@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Level 2 Wall Material 1
+  m_Name: Level 1 Wall Material 3
   m_Shader: {fileID: -6465566751694194690, guid: e072d7704e3a5254580b2e6628db2aaf,
     type: 3}
   m_Parent: {fileID: 0}
@@ -49,7 +49,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 43917e7184f9db04a9ce9fd945bc3a2c, type: 3}
+        m_Texture: {fileID: 2800000, guid: a15dd685babe133458645b4722422b44, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
