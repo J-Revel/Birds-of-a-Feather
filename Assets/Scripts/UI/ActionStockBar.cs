@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public enum LevelAction { Left, Right }
 public class ActionStockBar : MonoBehaviour
 {
-    private RectTransform rect_transform;
+    private Image img;
     private EntityManager entity_manager;
     private EntityQuery query;
     public LevelAction action;
@@ -17,7 +17,7 @@ public class ActionStockBar : MonoBehaviour
     {
         entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;
         query = new EntityQueryBuilder(Allocator.Temp).WithAll<LevelConfig, LevelState>().Build(entity_manager);
-        rect_transform = GetComponent<RectTransform>();
+        img = GetComponent<Image>();
     }
 
     void Update()
@@ -36,6 +36,6 @@ public class ActionStockBar : MonoBehaviour
                 ratio = level_state.right_use_time / level_config.right_use_duration;
                 break;
         }
-        rect_transform.anchorMax = new float2(1, 1 - ratio);
+        img.fillAmount = 1 - ratio;
     }
 }
