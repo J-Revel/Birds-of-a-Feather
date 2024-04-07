@@ -224,6 +224,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 1
+  default_color: {r: 0, g: 0, b: 0, a: 0}
+  using_color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2251777072928574918
 GameObject:
   m_ObjectHideFlags: 0
@@ -682,7 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.28627452, g: 0.8784314, b: 0.37254903, a: 0.77254903}
+  m_Color: {r: 0.0738252, g: 0.745283, b: 0.5110278, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -712,3 +714,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   action: 0
+  default_color: {r: 0, g: 0, b: 0, a: 0}
+  using_color: {r: 0, g: 0, b: 0, a: 0}
