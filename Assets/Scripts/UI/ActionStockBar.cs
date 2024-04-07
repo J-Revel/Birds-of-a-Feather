@@ -13,6 +13,8 @@ public class ActionStockBar : MonoBehaviour
     private EntityManager entity_manager;
     private EntityQuery query;
     public LevelAction action;
+    public Color default_color;
+    public Color using_color;
     void Start()
     {
         entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;
@@ -31,9 +33,11 @@ public class ActionStockBar : MonoBehaviour
         {
             case LevelAction.Left:
                 ratio = level_state.left_use_time / level_config.left_use_duration;
+                img.color = level_state.using_left ? using_color : default_color;
                 break;
             case LevelAction.Right:
                 ratio = level_state.right_use_time / level_config.right_use_duration;
+                img.color = level_state.using_left ? using_color : default_color;
                 break;
         }
         img.fillAmount = 1 - ratio;
