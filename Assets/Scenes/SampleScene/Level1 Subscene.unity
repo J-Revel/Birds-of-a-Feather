@@ -276,6 +276,23 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1402907449669415184, guid: db6e640b40eb674479feb96169c1f468,
+        type: 3}
+      propertyPath: m_text
+      value: 'it is simple reckoning, algebraic,
+
+        it is geometry on the wing,'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402907449669415184, guid: db6e640b40eb674479feb96169c1f468,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 146.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402907449669415184, guid: db6e640b40eb674479feb96169c1f468,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 146.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_Pivot.x
@@ -379,7 +396,7 @@ PrefabInstance:
     - target: {fileID: 6573552682867521625, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_Name
-      value: Secret poetry
+      value: vers1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
