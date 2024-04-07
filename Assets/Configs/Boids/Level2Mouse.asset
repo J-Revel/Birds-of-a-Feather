@@ -22,4 +22,4 @@ MonoBehaviour:
   align_force: 4
   mouse_attraction_force: 0.03
   wall_repulsion_range: 7.071068
-  wall_repulsion_force: 10
+  wall_repulsion_force: 1000
