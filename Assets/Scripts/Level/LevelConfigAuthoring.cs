@@ -89,6 +89,11 @@ public struct LevelState: IComponentData
 
 public partial class PlayerInputSystem: SystemBase
 {
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+        RequireForUpdate<LevelConfig>();
+    }
     protected override void OnUpdate()
     {
         LevelConfig level_config = SystemAPI.GetSingleton<LevelConfig>();

@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     private new Camera camera;
     private EntityManager entity_manager;
     private EntityQuery query;
+    
     private void Start()
     {
         camera = GetComponent<Camera>();
@@ -17,6 +18,6 @@ public class CameraController : MonoBehaviour
     }
     public void Update()
     {
-        camera.orthographicSize = query.GetSingleton<LevelConfig>().camera_size;
+        //camera.orthographicSize = query.GetSingleton<LevelConfig>().camera_size;
     }
 }
