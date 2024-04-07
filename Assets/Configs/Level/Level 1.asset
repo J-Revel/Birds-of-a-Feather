@@ -21,6 +21,9 @@ MonoBehaviour:
       spawn_interval: 0
       spawn_count: 0
       spawn_radius: 0
+    max_use_duration: 10
+    reload_delay: 1
+    reload_speed: 2
   right_click_action:
     action_type: 0
     behaviour_config: {fileID: 11400000, guid: 433d1019c909d5a4f9a4ee1d192f3c73, type: 2}
@@ -28,3 +31,6 @@ MonoBehaviour:
       spawn_interval: 0
       spawn_count: 0
       spawn_radius: 0
+    max_use_duration: 15
+    reload_delay: 1
+    reload_speed: 10
