@@ -1000,11 +1000,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   points:
-  - {x: 0, y: 0, z: 0}
-  - {x: 10, y: 0, z: 0}
-  - {x: 10, y: 0, z: 10}
-  - {x: 0, y: 0, z: 10}
-  thickness: 0
+  - {x: 44.98645, y: 0, z: -73.25915}
+  - {x: 35.43045, y: 0, z: 42.16817}
+  - {x: -37.319504, y: 0, z: 27.46494}
+  thickness: 5
   global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
 --- !u!4 &1280993287
 Transform:
@@ -1034,7 +1033,7 @@ GameObject:
   - component: {fileID: 1294253071}
   - component: {fileID: 1294253070}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Reveal Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1274,7 +1273,7 @@ GameObject:
   - component: {fileID: 1376067091}
   - component: {fileID: 1376067090}
   m_Layer: 0
-  m_Name: Quad
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1322,7 +1321,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 6745c47ec49dd714696d02361d7f3cf7, type: 3}
+  - {fileID: 2100000, guid: 7e75e0dc1f8ac60468a2fae017a9e028, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1826,6 +1825,7 @@ SceneRoots:
   - {fileID: 2002955717}
   - {fileID: 1294253073}
   - {fileID: 1376067093}
+  - {fileID: 211823299}
   - {fileID: 905682732}
   - {fileID: 185474341}
   - {fileID: 1280993287}
