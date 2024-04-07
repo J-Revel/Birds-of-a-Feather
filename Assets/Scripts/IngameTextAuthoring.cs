@@ -14,7 +14,7 @@ public class IngameTextAuthoring : MonoBehaviour
         public override void Bake(IngameTextAuthoring authoring)
         {
             Entity entity = GetEntity(TransformUsageFlags.None);
-            AddComponentObject<IngameTextAuthoring>(entity, new IngameTextAuthoring { text = authoring.text, size = authoring.size });
+            AddComponentObject<IngameTextComponent>(entity, new IngameTextComponent{ text = authoring.text, size = authoring.size });
         }
     }
 }
