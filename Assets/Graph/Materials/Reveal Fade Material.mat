@@ -42,7 +42,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Multiplier: 0.04
+    - _Multiplier: 0.066
     - _Noise_Movement: 2.49
     - _QueueControl: 0
     - _QueueOffset: 0
