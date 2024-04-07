@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01e0169b2ed137f40a3caab35f0b07b2, type: 3}
-  m_Name: Level 2
+  m_Name: Level 3
   m_EditorClassIdentifier: 
-  default_behaviour_config: {fileID: 11400000, guid: 6bd86502686fc3845ac0b240ed85024e,
+  default_behaviour_config: {fileID: 11400000, guid: c3d35534d7abe1540a0c39b4933e81a5,
     type: 2}
   left_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: f66270a92a5f7c148b77efae4adfa1c5, type: 2}
+    behaviour_config: {fileID: 11400000, guid: 3d00690b25d415849b126e9041caf218, type: 2}
     spawn_config:
       spawn_interval: 0
       spawn_count: 0

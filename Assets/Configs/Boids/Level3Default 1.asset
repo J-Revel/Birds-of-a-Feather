@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
-  m_Name: Mouse Attracted Behaviour
+  m_Name: Level3Default 1
   m_EditorClassIdentifier: 
-  radius: 0
-  speed: 16
-  attraction_force: 5
-  attraction_range: 4.472136
-  repulsion_force: 100
-  repulsion_range: 3.162278
+  speed: 40
+  attraction_force: 20
+  attraction_range: 80
+  repulsion_force: 80
+  repulsion_range: 30
   neighbour_detection_range: 10
-  align_force: 5
-  mouse_attraction_force: 1
-  wall_repulsion_range: 7.071068
-  wall_repulsion_force: 10
+  align_force: 20
+  mouse_attraction_force: 0
+  wall_repulsion_range: 50
+  wall_repulsion_force: 1000

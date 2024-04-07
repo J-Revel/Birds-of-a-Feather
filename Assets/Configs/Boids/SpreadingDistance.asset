@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0
   speed: 18
+  speed: 18
   attraction_force: 5
   attraction_range: 6.324555
   repulsion_force: 40
