@@ -11,60 +11,52 @@ public class LevelLoader : MonoBehaviour
 {
     public static LevelLoader instance;
     private World level_world;
-    public EntitySceneReference level;
+    public EntitySceneReference[] levels;
     public SystemHandle sceneSystem;
     private Entity active_scene_entity;
+    private int active_level_index = 0;
 
     void Awake()
     {
         instance = this;
     }
 
-    private IEnumerator Start()
-    {
-        yield return LoadLevel(0);
-    }
-
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StopAllCoroutines();
-            UnloadScene();
-            StartCoroutine(LoadLevel(0));
-        }
     }
 
-    public void UnloadLevel()
+    public void LoadLevel(int level_index)
     {
-        if(level_world.IsCreated)
-            level_world.Dispose();
+        StopAllCoroutines();
+        UnloadScene();
+        active_level_index = level_index;
+        StartCoroutine(LoadLevelCoroutine(level_index));
+    }
+    public void ReloadLevel()
+    {
+        StopAllCoroutines();
+        UnloadScene();
+        StartCoroutine(LoadLevelCoroutine(active_level_index));
     }
 
-    public IEnumerator LoadLevel(int level_index)
+    public IEnumerator LoadLevelCoroutine(int level_index)
     {
         var loadParameters = new SceneSystem.LoadParameters()
         { Flags = SceneLoadFlags.LoadAdditive};
-        active_scene_entity = SceneSystem.LoadSceneAsync(World.DefaultGameObjectInjectionWorld.Unmanaged, level, loadParameters);
+        active_scene_entity = SceneSystem.LoadSceneAsync(World.DefaultGameObjectInjectionWorld.Unmanaged, levels[level_index], loadParameters);
 
         while (!SceneSystem.IsSceneLoaded(World.DefaultGameObjectInjectionWorld.Unmanaged, active_scene_entity))
             yield return null;
         while (!Input.GetKeyDown(KeyCode.Space))
             yield return null;
         UnloadScene();
-        /*var ecb = new EntityCommandBuffer(Allocator.Persistent,
-            PlaybackPolicy.MultiPlayback);
-        var postLoadEntity = ecb.CreateEntity();
-
-        var postLoadCommandBuffer = new PostLoadCommandBuffer()
-        {
-            CommandBuffer = ecb
-        };
-        level_world.EntityManager.AddComponentData(sceneEntity, postLoadCommandBuffer);*/
     }
 
     public void UnloadScene()
     {
+        EntityManager entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
+        query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
         if(active_scene_entity != Entity.Null)
             SceneSystem.UnloadScene(World.DefaultGameObjectInjectionWorld.Unmanaged, active_scene_entity);
         active_scene_entity = Entity.Null;

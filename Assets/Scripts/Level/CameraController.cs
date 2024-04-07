@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour
     }
     public void Update()
     {
-        //camera.orthographicSize = query.GetSingleton<LevelConfig>().camera_size;
+        if(query.HasSingleton<LevelConfig>())
+            camera.orthographicSize = query.GetSingleton<LevelConfig>().camera_size;
     }
 }

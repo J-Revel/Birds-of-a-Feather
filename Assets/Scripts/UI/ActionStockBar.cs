@@ -22,6 +22,8 @@ public class ActionStockBar : MonoBehaviour
 
     void Update()
     {
+        if (!query.HasSingleton<LevelConfig>())
+            return;
         LevelState level_state = query.GetSingleton<LevelState>();
         LevelConfig level_config = query.GetSingleton<LevelConfig>();
         float ratio = 0;
