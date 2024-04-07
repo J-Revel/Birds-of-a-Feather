@@ -2441,6 +2441,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ingame HUD
       objectReference: {fileID: 0}
+    - target: {fileID: 2251777072928574918, guid: 930c4be681b9aee4b8321f2d22ae462d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2609636573990675795, guid: 930c4be681b9aee4b8321f2d22ae462d,
         type: 3}
       propertyPath: using_color.a
