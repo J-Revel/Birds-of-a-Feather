@@ -196,7 +196,9 @@ public partial class BoidMovementSystem : SystemBase
                 int2 min_partition = (int2)((position - config.config.radius - max_range) / boids_partition_size);
                 int2 max_partition = (int2)((position + config.config.radius + max_range) / boids_partition_size);
                 NativeHashSet<Entity> handled_neighbours = new NativeHashSet<Entity>(64, Allocator.Temp);
-                
+                Entity closest_entity = entity;
+                float mindistance = 10000;
+
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
@@ -220,13 +222,37 @@ public partial class BoidMovementSystem : SystemBase
                             {
                                 state.acceleration += -direction * config.config.repulsion_force;
                             }
+
+                            if (distancesq < mindistance)
+                            {
+                                mindistance = distancesq;
+                                closest_entity = neighbour_entity;
+                            }
                         }
                     }
                 }
+
+                if (closest_entity != entity)
+                {
+                    var v1 = math.normalize(state.velocity);
+                    var neighbour_position =
+                        math.normalize(
+                             SystemAPI.GetComponent<LocalTransform>(closest_entity).Position.xz);
+                    var crossdot = v1.y * neighbour_position.x - v1.x * neighbour_position.y;
+                    var scalar = math.dot(v1, neighbour_position);
+                    if (scalar > 0)
+                    {
+                        var norm = new float2(-v1.y, v1.x);
+                        state.acceleration += norm * crossdot * 0;
+                        state.velocity -= state.velocity * math.abs(crossdot) * (float)0.01;
+                    }
+                }
+
+
                 max_range = config.config.wall_repulsion_range;
                 min_partition = (int2)((position - max_range) / collider_partition_size);
                 max_partition = (int2)((position + max_range) / collider_partition_size);
-                
+
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
@@ -241,6 +267,8 @@ public partial class BoidMovementSystem : SystemBase
                             {
                                 state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force;
                             }
+
+
                         }
                     }
                 }
