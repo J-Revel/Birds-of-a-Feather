@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1273174, g: 0.13414761, b: 0.12107885, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731715, g: 0.13414735, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -131,13 +131,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1402907449669415184, guid: db6e640b40eb674479feb96169c1f468,
-        type: 3}
-      propertyPath: m_text
-      value: 'they follow or not
-
-        that is their affair;'
-      objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_Pivot.x
@@ -171,12 +164,12 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 39.83
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -191,7 +184,7 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 43.6
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -216,12 +209,12 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -19.2
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -249,7 +242,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6573552682867521625, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
-      insertIndex: -1
+      insertIndex: 3
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: db6e640b40eb674479feb96169c1f468, type: 3}
 --- !u!1 &474161603
@@ -431,12 +424,12 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 39.83
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -451,7 +444,7 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -17.4
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -476,12 +469,12 @@ PrefabInstance:
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -20.1
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3776503395548310790, guid: db6e640b40eb674479feb96169c1f468,
         type: 3}
@@ -502,6 +495,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: vers1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8666670069341142780, guid: db6e640b40eb674479feb96169c1f468,
+        type: 3}
+      propertyPath: text
+      value: "does the first wild-goose stop to explain\r\nto the others? no\u2014he
+        is off;"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
