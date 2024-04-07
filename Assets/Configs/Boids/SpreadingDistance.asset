@@ -23,3 +23,4 @@ MonoBehaviour:
   mouse_attraction_force: 0.03
   wall_repulsion_range: 7.071068
   wall_repulsion_force: 1000
+  color: {r: 0.86274517, g: 0.5647059, b: 0.227451, a: 1}

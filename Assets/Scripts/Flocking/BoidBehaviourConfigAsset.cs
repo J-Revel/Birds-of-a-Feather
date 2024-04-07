@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu()]
@@ -19,6 +20,7 @@ public class BoidBehaviourConfigAsset : ScriptableObject
 
     public float wall_repulsion_range;
     public float wall_repulsion_force;
+    public Color color;
     public BoidBehaviourConfig Bake()
     {
         return new BoidBehaviourConfig
@@ -34,6 +36,7 @@ public class BoidBehaviourConfigAsset : ScriptableObject
             mouse_attraction_force = mouse_attraction_force,
             wall_repulsion_force = wall_repulsion_force,
             wall_repulsion_range = wall_repulsion_range,
+            color = new float4(color.r, color.g, color.b, color.a),
         };
     }
 }
@@ -54,5 +57,7 @@ public struct BoidBehaviourConfig
 
     public float wall_repulsion_range;
     public float wall_repulsion_force;
+
+    public float4 color;
 
 }

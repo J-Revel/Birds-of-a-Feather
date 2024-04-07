@@ -1,14 +1,28 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Rendering;
 using Unity.Transforms;
 using UnityEditor.Rendering;
 using UnityEngine;
 using static Unity.Entities.SystemBaseDelegates;
 using static UnityEngine.GraphicsBuffer;
+
+//[MaterialProperty("_Color")]
+public struct BoidColor : IComponentData
+{
+    public float4 Value;
+}
+
+public struct BoidColorState: IComponentData
+{
+    public float left_time;
+    public float right_time;
+}
 
 public class BoidAuthoring : MonoBehaviour
 {
@@ -16,6 +30,10 @@ public class BoidAuthoring : MonoBehaviour
     public float start_direction_angle;
     public float display_scale = 1;
     public bool controllable = true;
+    public float color_transition_duration = 0.5f;
+    public Color default_color;
+    public Color left_action_color;
+    public Color right_action_color;
 
     public class Baker : Baker<BoidAuthoring>
     {
@@ -26,11 +44,14 @@ public class BoidAuthoring : MonoBehaviour
             AddComponent<BoidState>(entity,
                 new BoidState
                 {
-                    velocity = new float2(math.cos(authoring.start_direction_angle), math.sin(authoring.start_direction_angle))
+                    velocity = new float2(math.cos(authoring.start_direction_angle), math.sin(authoring.start_direction_angle)),
+                    start_color = new float4(authoring.default_color.r, authoring.default_color.g, authoring.default_color.b, authoring.default_color.a),
+                    target_color = new float4(authoring.default_color.r, authoring.default_color.g, authoring.default_color.b, authoring.default_color.a),
                 });
             AddComponent<BoidConfig>(entity, new BoidConfig
             {
                 config = authoring.config.Bake(),
+                color_transition_duration = authoring.color_transition_duration,
             });
             AddComponent<BoidNeighbourData>(entity);
             AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
@@ -38,6 +59,7 @@ public class BoidAuthoring : MonoBehaviour
             {
                 AddComponent<ControllableBoidTag>(entity);
             }
+            AddComponent<BoidColor>(entity, new BoidColor { Value = new float4(authoring.default_color.r, authoring.default_color.g, authoring.default_color.b, authoring.default_color.a)});
         }
     }
 }
@@ -54,6 +76,7 @@ public struct BoidDisplay : IComponentData
 
 public struct BoidConfig: IComponentData
 {
+    public float color_transition_duration;
     public BoidBehaviourConfig config;
 }
 
@@ -61,6 +84,9 @@ public struct BoidState : IComponentData
 {
     public float2 velocity;
     public float2 acceleration;
+    public float4 start_color;
+    public float4 target_color;
+    public float color_transition_time;
 }
 
 public struct BoidPartitionCell : IComponentData
@@ -73,6 +99,29 @@ public struct BoidNeighbourData : IComponentData
 {
     public float2 average_velocity;
     public int neighbour_count;
+}
+
+
+[UpdateInGroup(typeof(SimulationSystemGroup))]
+public partial class BoidDisplaySystem : SystemBase
+{
+    protected override void OnUpdate()
+    {
+        float dt = SystemAPI.Time.DeltaTime;
+        Entities.ForEach((ref BoidColor out_color, ref BoidState state, in BoidConfig config) =>
+        {
+            out_color.Value = math.lerp(state.start_color, state.target_color, state.color_transition_time / state.color_transition_time);
+            state.color_transition_time += dt;
+            if (state.color_transition_time >= config.color_transition_duration)
+                state.color_transition_time = config.color_transition_duration;
+            if(math.any(config.config.color != state.target_color))
+            {
+                state.start_color = out_color.Value;
+                state.target_color = config.config.color;
+                state.color_transition_time = 0;
+            }
+        }).Schedule();
+    }
 }
 
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateAfter(typeof(BehaviourZoneSystem))]

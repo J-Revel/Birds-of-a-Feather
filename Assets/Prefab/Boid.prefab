@@ -123,6 +123,10 @@ MonoBehaviour:
   start_direction_angle: 0
   display_scale: 5
   controllable: 1
+  color_transition_duration: 0.5
+  default_color: {r: 0.28235295, g: 0.023529412, b: 0.09803922, a: 1}
+  left_action_color: {r: 0.28235295, g: 0.023529412, b: 0.09803922, a: 1}
+  right_action_color: {r: 0.28235295, g: 0.023529412, b: 0.09803922, a: 1}
 --- !u!1 &4693432115381385538
 GameObject:
   m_ObjectHideFlags: 0
