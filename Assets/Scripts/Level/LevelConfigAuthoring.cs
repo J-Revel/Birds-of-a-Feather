@@ -97,7 +97,6 @@ public partial class PlayerInputSystem: SystemBase
         if (Input.GetMouseButtonDown(0) && state.left_use_time < level_config.left_use_duration)
         {
             state.using_left = true;
-            state.left_reload_delay = 0;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.left_behaviour_config });
@@ -106,6 +105,7 @@ public partial class PlayerInputSystem: SystemBase
         if(state.using_left)
         {
             state.left_use_time += SystemAPI.Time.DeltaTime;
+            state.left_reload_delay = 0;
             if (!Input.GetMouseButton(0) || (state.using_left && state.left_use_time >= level_config.left_use_duration))
             {
                 state.using_left = false;
@@ -119,7 +119,6 @@ public partial class PlayerInputSystem: SystemBase
         if (Input.GetMouseButtonDown(1) && state.right_use_time < level_config.right_use_duration)
         {
             state.using_right = true;
-            state.right_reload_delay = 0;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.right_behaviour_config });
@@ -128,6 +127,7 @@ public partial class PlayerInputSystem: SystemBase
         if(state.using_right)
         {
             state.right_use_time += SystemAPI.Time.DeltaTime;
+            state.right_reload_delay = 0;
             if (Input.GetMouseButtonUp(1))
             {
                 state.using_right = false;
