@@ -29,6 +29,7 @@ public class LevelConfigAuthoring: MonoBehaviour
                 right_spawn_config = authoring.config_asset.right_click_action.spawn_config,
                 left_use_duration = authoring.config_asset.left_click_action.max_use_duration,
                 right_use_duration = authoring.config_asset.right_click_action.max_use_duration,
+                camera_size = authoring.config_asset.camera_size,
             });
             AddComponent<LevelState>(entity);
         }
@@ -73,6 +74,7 @@ public struct LevelConfig: IComponentData
     public float right_use_duration;
     public float left_reload_delay;
     public float right_reload_delay;
+    public float camera_size;
 }
 
 public struct LevelState: IComponentData

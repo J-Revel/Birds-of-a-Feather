@@ -8,5 +8,6 @@ public class LevelConfigAsset : ScriptableObject
     public BoidBehaviourConfigAsset default_behaviour_config;
     public PlayerActionConfig left_click_action;
     public PlayerActionConfig right_click_action;
+    public float camera_size = 100;
 }
 
