@@ -13,6 +13,7 @@ public class BoidAuthoring : MonoBehaviour
     public BoidBehaviourConfigAsset config;
     public float start_direction_angle;
     public float display_scale = 1;
+    public bool controllable = true;
 
     public class Baker : Baker<BoidAuthoring>
     {
@@ -31,8 +32,17 @@ public class BoidAuthoring : MonoBehaviour
             });
             AddComponent<BoidNeighbourData>(entity);
             AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
+            if(authoring.controllable)
+            {
+                AddComponent<ControllableBoidTag>(entity);
+            }
         }
     }
+}
+
+public struct ControllableBoidTag: IComponentData
+{
+
 }
 
 public struct BoidDisplay : IComponentData
@@ -118,7 +128,8 @@ public partial class BoidMovementSystem : SystemBase
                 float3 velocity = new float3(state.velocity.x, 0, state.velocity.y);
                 transform.Position += velocity * dt;
                 transform.Scale = display.display_scale;
-                transform.Rotation = quaternion.LookRotation(velocity, new float3(0, 1, 0));
+                if(math.any(velocity != 0))
+                    transform.Rotation = quaternion.LookRotation(velocity, new float3(0, 1, 0));
                 int2 new_partition_cell_min = (int2)((transform.Position.xz - config.config.radius) / boids_partition_size);
                 int2 new_partition_cell_max = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
                 for(int i=partition_cell.min_partition.x; i<=partition_cell.max_partition.x; i++)
@@ -208,7 +219,7 @@ public partial class BoidMovementSystem : SystemBase
                                 continue;
                             handled_neighbours.Add(neighbour_entity);
                             float2 neighbour_position = SystemAPI.GetComponent<LocalTransform>(neighbour_entity).Position.xz;
-                            float2 direction = math.all(neighbour_position == position) ? float2.zero : math.normalize(neighbour_position - position);
+                            float2 direction = math.normalizesafe(neighbour_position - position);
                             float distancesq = math.distancesq(position, neighbour_position);
                             float active_attraction_range = config.config.attraction_range + config.config.radius + neighbour_config.config.radius;
                             float active_repulsion_range = config.config.repulsion_range + config.config.radius + neighbour_config.config.radius;
@@ -244,15 +255,15 @@ public partial class BoidMovementSystem : SystemBase
                         }
                     }
                 }
-                if (math.all(neighbour_data.average_velocity != float2.zero))
-                    state.acceleration += math.normalize(neighbour_data.average_velocity) * config.config.align_force;
+                state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * config.config.align_force;
                 float2 mouse_direction = mouse_position - position;
                 float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);
-                float3 cross = math.normalize(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
+                float3 cross = math.normalizesafe(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
                 float3 force_direction = math.cross(cross, velocity_3D);
                 state.velocity += force_direction.xz * config.config.mouse_attraction_force;
+
                 state.velocity = state.velocity + state.acceleration * dt;
-                state.velocity = math.normalize(state.velocity) * config.config.speed;
+                state.velocity = math.normalizesafe(state.velocity) * config.config.speed;
             }).ScheduleParallel();
     }
 }
