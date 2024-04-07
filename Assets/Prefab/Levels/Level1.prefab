@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &527346616196582105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6875432252852193352}
+  m_Layer: 0
+  m_Name: Level1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6875432252852193352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527346616196582105}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 179, y: 0, z: 299}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8517206856429957764}
+  - {fileID: 1699477960066490573}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4006028420350679358
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1699477960066490573}
+  - component: {fileID: 2638937601321097344}
+  m_Layer: 0
+  m_Name: CollisionIntro_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1699477960066490573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4006028420350679358}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000016561335, y: 0.82939774, z: 0.000000016775632, w: 0.55865854}
+  m_LocalPosition: {x: -47.399994, y: 0, z: 6.600006}
+  m_LocalScale: {x: 0.46259707, y: 13.875555, z: 6.8955345}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6875432252852193352}
+  m_LocalEulerAnglesHint: {x: 0, y: 112.074, z: 0}
+--- !u!114 &2638937601321097344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4006028420350679358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 13.61391, y: 0.000000022475563, z: -0.8040943}
+  - {x: 51.633728, y: 0.000000117242195, z: -4.5053596}
+  - {x: 27.156958, y: 0.00000022176992, z: 0.38285688}
+  - {x: -43.51336, y: -0.000000022769724, z: 9.855303}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &6902248079368134444
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8517206856429957764}
+  - component: {fileID: 1651939031787963714}
+  m_Layer: 0
+  m_Name: CollisionIntro_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8517206856429957764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6902248079368134444}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000023155355, y: 0.9999451, z: 0.0000000044191757, w: -0.010477339}
+  m_LocalPosition: {x: 23, y: 0, z: 25.600006}
+  m_LocalScale: {x: 0.46259716, y: 13.875555, z: 6.895536}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6875432252852193352}
+  m_LocalEulerAnglesHint: {x: 0, y: 181.201, z: 0}
+--- !u!114 &1651939031787963714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6902248079368134444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 3.5275238, y: 0.0000000016425363, z: 0.9189303}
+  - {x: 14.741843, y: 0.000000006878878, z: 2.232877}
+  - {x: 8.223102, y: 0.000000025033838, z: 4.302756}
+  - {x: -11.645489, y: 0.00000007241893, z: 2.8346162}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
