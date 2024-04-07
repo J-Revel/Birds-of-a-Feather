@@ -1,0 +1,397 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2400241124618961008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2569926492830431738}
+  - component: {fileID: 2550651033256238725}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2569926492830431738
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2400241124618961008}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.0000000018914743, y: 0.25037608, z: 0.000000014008643, w: 0.96814865}
+  m_LocalPosition: {x: -16.5, y: 0, z: 76.600006}
+  m_LocalScale: {x: 0.46259713, y: 13.875555, z: 6.8955355}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 29, z: 0}
+--- !u!114 &2550651033256238725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2400241124618961008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 37.97928, y: 0.00000008263963, z: -5.754754}
+  - {x: 25.180962, y: 0.0000002162881, z: -0.9098101}
+  - {x: 5.511759, y: 0.00000017945109, z: 4.434216}
+  - {x: 7.946741, y: 0.0000001883666, z: 1.270516}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &3339375845580920352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6768184154087882274}
+  - component: {fileID: 7374559296178722727}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6768184154087882274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3339375845580920352}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000008194698, y: 0.6722442, z: 0.000000011518101, w: 0.74032956}
+  m_LocalPosition: {x: 59, y: 0, z: 39.899994}
+  m_LocalScale: {x: 0.46259713, y: 13.875555, z: 6.895537}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 84.481, z: 0}
+--- !u!114 &7374559296178722727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3339375845580920352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 37.97928, y: 0.00000008263963, z: -5.754754}
+  - {x: 40.512444, y: 0.00000020401079, z: -1.1176947}
+  - {x: 23.894907, y: 0.00000012890845, z: 10.935906}
+  - {x: 18.092964, y: 0.00000013389437, z: 9.86756}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &4248278445277535129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8431386599865481737}
+  - component: {fileID: 7909675131717302802}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8431386599865481737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248278445277535129}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000022992552, y: 0.81778455, z: 0.000000032317335, w: 0.57552457}
+  m_LocalPosition: {x: -92.399994, y: 0, z: 72.29999}
+  m_LocalScale: {x: 0.46259725, y: 13.875555, z: 6.8955374}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 109.727, z: 0}
+--- !u!114 &7909675131717302802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4248278445277535129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 74.7833, y: -0.00000030060764, z: 3.9800968}
+  - {x: 28.019564, y: -0.00000025819904, z: 11.486614}
+  - {x: 22.021315, y: 0.00000031016052, z: 11.612302}
+  - {x: 43.624413, y: 0.0000003493031, z: 7.3423023}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &4455352968732570498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7241423308707189405}
+  - component: {fileID: 8524024703952606054}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7241423308707189405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455352968732570498}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.000000003706966, y: -0.10016342, z: -0.000000027454739, w: 0.99497104}
+  m_LocalPosition: {x: 63, y: 0, z: 63.600006}
+  m_LocalScale: {x: 0.46259713, y: 13.875555, z: 6.895534}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: -11.497, z: 0}
+--- !u!114 &8524024703952606054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455352968732570498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 31.687513, y: 0.00000007144185, z: -5.3066087}
+  - {x: 21.870522, y: 0.00000021137296, z: 0.37319183}
+  - {x: 12.2723255, y: 0.00000022267017, z: 3.2807083}
+  - {x: -6.862845, y: 0.00000016560648, z: 6.182383}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &6134644767107439101
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4653183379174007592}
+  - component: {fileID: 8547545010397822969}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4653183379174007592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134644767107439101}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000022992552, y: 0.81778455, z: 0.000000032317335, w: 0.57552457}
+  m_LocalPosition: {x: -92.399994, y: 0, z: 72.29999}
+  m_LocalScale: {x: 0.46259725, y: 13.875555, z: 6.8955374}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 109.727, z: 0}
+--- !u!114 &8547545010397822969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6134644767107439101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 18.792194, y: -0.0000006070842, z: 11.735482}
+  - {x: 26.650965, y: -0.00000026831052, z: 11.742648}
+  - {x: 21.777725, y: 0.00000001849705, z: 19.011105}
+  - {x: 18.977917, y: 0.00000007190652, z: 14.370782}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &6328557926461300844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453446055459793778}
+  - component: {fileID: 4579242383072992562}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &453446055459793778
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6328557926461300844}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.00000002353414, y: 0.82254606, z: 0.000000033078567, w: 0.56869847}
+  m_LocalPosition: {x: 29.699997, y: 0, z: -23.899994}
+  m_LocalScale: {x: 0.46259713, y: 13.875555, z: 6.895537}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 110.681, z: 0}
+--- !u!114 &4579242383072992562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6328557926461300844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: -22.709105, y: -0.00000007226831, z: -1.9699831}
+  - {x: -25.441391, y: 0.00000020216808, z: -1.131556}
+  - {x: 10.049803, y: 0.00000026025268, z: 13.008355}
+  - {x: 18.977917, y: 0.00000007190652, z: 14.370782}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &7335975628184062069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2100916857169268188}
+  - component: {fileID: 1088835146354845309}
+  m_Layer: 0
+  m_Name: CollisionSablier_3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2100916857169268188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335975628184062069}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.000000008194698, y: 0.6722442, z: 0.000000011518101, w: 0.74032956}
+  m_LocalPosition: {x: -100.29999, y: 0, z: -11}
+  m_LocalScale: {x: 0.46259713, y: 13.875555, z: 6.895537}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 945949307901179412}
+  m_LocalEulerAnglesHint: {x: 0, y: 84.481, z: 0}
+--- !u!114 &1088835146354845309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335975628184062069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df5280d155922424da8a5fe82abeafdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points:
+  - {x: 37.97928, y: 0.00000008263963, z: -5.754754}
+  - {x: 40.512444, y: 0.00000020401079, z: -1.1176947}
+  - {x: 28.630539, y: 0.000000029448813, z: 18.112719}
+  - {x: 16.026844, y: 0.000000037542833, z: 16.917662}
+  thickness: 0
+  global_config: {fileID: 11400000, guid: f860ae57adf7430458e175f34844023c, type: 2}
+--- !u!1 &7853070825771427422
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 945949307901179412}
+  m_Layer: 0
+  m_Name: Level4
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &945949307901179412
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7853070825771427422}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -211, y: 0, z: -338}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4653183379174007592}
+  - {fileID: 8431386599865481737}
+  - {fileID: 2100916857169268188}
+  - {fileID: 453446055459793778}
+  - {fileID: 6768184154087882274}
+  - {fileID: 2569926492830431738}
+  - {fileID: 7241423308707189405}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
