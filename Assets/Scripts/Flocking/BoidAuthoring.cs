@@ -137,6 +137,10 @@ public partial class BoidMovementSystem : SystemBase
     public class LocalCoefficient : IComponentData
     {
         public float repulsioncoef;
+        public float repulsionarea;
+        public float attractioncoef;
+        public float attractionarea;
+        public float aligncoef;
     }
 
     protected override void OnCreate()
@@ -148,6 +152,10 @@ public partial class BoidMovementSystem : SystemBase
         EntityManager.CreateSingleton<LocalCoefficient>(new LocalCoefficient()
         {
             repulsioncoef = 1,
+            repulsionarea = 1,
+            attractioncoef = 1,
+            attractionarea = 1,
+            aligncoef = 1,
         });
     }
 
@@ -164,9 +172,21 @@ public partial class BoidMovementSystem : SystemBase
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
         NativeParallelMultiHashMap<int2, Entity> wall_partition = SystemAPI.ManagedAPI.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid;
 
-        if (Input.GetKey(KeyCode.A)) coef.repulsioncoef *= 1.1f;
-        if (Input.GetKey(KeyCode.Q)) coef.repulsioncoef /= 1.1f;
+        if (Input.GetKey(KeyCode.A)) coef.repulsioncoef *= 1.05f;
+        if (Input.GetKey(KeyCode.Q)) coef.repulsioncoef /= 1.05f;
+        if (Input.GetKey(KeyCode.Z)) coef.repulsionarea *= 1.05f;
+        if (Input.GetKey(KeyCode.S)) coef.repulsionarea /= 1.05f;
+        if (Input.GetKey(KeyCode.E)) coef.attractioncoef *= 1.05f;
+        if (Input.GetKey(KeyCode.D)) coef.attractioncoef /= 1.05f;
+        if (Input.GetKey(KeyCode.R)) coef.attractionarea *= 1.05f;
+        if (Input.GetKey(KeyCode.F)) coef.attractionarea /= 1.05f;
+        if (Input.GetKey(KeyCode.T)) coef.aligncoef *= 1.05f;
+        if (Input.GetKey(KeyCode.G)) coef.aligncoef /= 1.05f;
         float repulsioncoef = coef.repulsioncoef;
+        float repulsionarea = coef.repulsionarea;
+        float attractioncoef = coef.attractioncoef;
+        float attractionarea = coef.attractionarea;
+        float aligncoef = coef.aligncoef;
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
             .WithNone<BoidPartitionCell>()
@@ -255,7 +275,7 @@ public partial class BoidMovementSystem : SystemBase
                     neighbour_data.average_velocity = neighbour_velocity_sum / neighbour_count;
                     neighbour_data.neighbour_count = neighbour_count;
 
-            }
+                }
         }).ScheduleParallel();
         float3 mouse_pos_screen = (float3)Input.mousePosition;
         mouse_pos_screen.z = 10;
@@ -288,15 +308,15 @@ public partial class BoidMovementSystem : SystemBase
                             float2 neighbour_position = SystemAPI.GetComponent<LocalTransform>(neighbour_entity).Position.xz;
                             float2 direction = math.normalizesafe(neighbour_position - position);
                             float distancesq = math.distancesq(position, neighbour_position);
-                            float active_attraction_range = config.config.attraction_range + config.config.radius + neighbour_config.config.radius;
-                            float active_repulsion_range = config.config.repulsion_range + config.config.radius + neighbour_config.config.radius;
+                            float active_attraction_range = (config.config.attraction_range + config.config.radius + neighbour_config.config.radius) * attractionarea;
+                            float active_repulsion_range = (config.config.repulsion_range + config.config.radius + neighbour_config.config.radius) * repulsionarea;
                             if (distancesq < active_attraction_range * active_attraction_range)
                             {
-                                state.acceleration += direction * config.config.attraction_force;
+                                state.acceleration += direction * config.config.attraction_force * attractioncoef;
                             }
                             if (distancesq < active_repulsion_range * active_repulsion_range)
                             {
-                                state.acceleration += -direction * config.config.repulsion_force * repulsioncoef;
+                                state.acceleration -= direction * config.config.repulsion_force * repulsioncoef;
                             }
                         }
                     }
@@ -322,12 +342,16 @@ public partial class BoidMovementSystem : SystemBase
                         }
                     }
                 }
-                state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * config.config.align_force;
+                state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * config.config.align_force * aligncoef;
                 float2 mouse_direction = mouse_position - position;
                 float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);
                 float3 cross = math.normalizesafe(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
                 float3 force_direction = math.cross(cross, velocity_3D);
                 state.velocity += force_direction.xz * config.config.mouse_attraction_force;
+                if (math.length(state.acceleration) > 100)
+                {
+                    state.acceleration = math.normalizesafe(state.acceleration) * 100;
+                }
 
                 state.velocity = state.velocity + state.acceleration * dt;
                 var targetvelocity = math.normalize(state.velocity) * config.config.speed;
