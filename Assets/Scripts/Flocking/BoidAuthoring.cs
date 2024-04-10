@@ -127,10 +127,16 @@ public partial class BoidDisplaySystem : SystemBase
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateAfter(typeof(BehaviourZoneSystem))]
 public partial class BoidMovementSystem : SystemBase
 {
+
+
     public class Singleton : IComponentData
     {
         public NativeParallelMultiHashMap<int2, Entity> partition_grid;
+    }
 
+    public class LocalCoefficient : IComponentData
+    {
+        public float repulsioncoef;
     }
 
     protected override void OnCreate()
@@ -139,6 +145,10 @@ public partial class BoidMovementSystem : SystemBase
         EntityManager.CreateSingleton<Singleton>(new Singleton { 
             partition_grid = new NativeParallelMultiHashMap<int2, Entity>(4096 * 4, Allocator.Persistent),
         });
+        EntityManager.CreateSingleton<LocalCoefficient>(new LocalCoefficient()
+        {
+            repulsioncoef = 1,
+        });
     }
 
     protected override void OnUpdate()
@@ -146,11 +156,17 @@ public partial class BoidMovementSystem : SystemBase
         float dt = SystemAPI.Time.DeltaTime;
 
         NativeParallelMultiHashMap<int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<Singleton>().partition_grid;
+        LocalCoefficient coef = SystemAPI.ManagedAPI.GetSingleton<LocalCoefficient>();
+        
         float boids_partition_size = SystemAPI.GetSingleton<GlobalConfig>().boid_partition_size;
         float collider_partition_size = SystemAPI.GetSingleton<GlobalConfig>().collider_partition_size;
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
         NativeParallelMultiHashMap<int2, Entity> wall_partition = SystemAPI.ManagedAPI.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid;
+
+        if (Input.GetKey(KeyCode.A)) coef.repulsioncoef *= 1.1f;
+        if (Input.GetKey(KeyCode.Q)) coef.repulsioncoef /= 1.1f;
+        float repulsioncoef = coef.repulsioncoef;
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
             .WithNone<BoidPartitionCell>()
@@ -280,7 +296,7 @@ public partial class BoidMovementSystem : SystemBase
                             }
                             if (distancesq < active_repulsion_range * active_repulsion_range)
                             {
-                                state.acceleration += -direction * config.config.repulsion_force;
+                                state.acceleration += -direction * config.config.repulsion_force * repulsioncoef;
                             }
                         }
                     }
