@@ -8,6 +8,8 @@ public class BoidBehaviourConfigAsset : ScriptableObject
 {
     public float radius;
     public float speed;
+    public float random_turn_force;
+    public float turn_variation_speed;
     public float attraction_force;
     public float attraction_range;
     public float repulsion_force;
@@ -27,6 +29,8 @@ public class BoidBehaviourConfigAsset : ScriptableObject
         {
             radius = radius,
             speed = speed,
+            random_turn_force = random_turn_force,
+            turn_variation_speed = turn_variation_speed,
             attraction_force = attraction_force,
             attraction_range = attraction_range,
             repulsion_force = repulsion_force,
@@ -45,6 +49,10 @@ public struct BoidBehaviourConfig
 {
     public float radius;
     public float speed;
+
+    public float random_turn_force;
+    public float turn_variation_speed;
+
     public float attraction_force;
     public float attraction_range;
     public float repulsion_force;

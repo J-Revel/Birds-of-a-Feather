@@ -26,7 +26,7 @@ MonoBehaviour:
     reload_speed: 10
   right_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: 433d1019c909d5a4f9a4ee1d192f3c73, type: 2}
+    behaviour_config: {fileID: 11400000, guid: 1251fe04f07dd78439113277ca7d62ee, type: 2}
     spawn_config:
       spawn_interval: 0
       spawn_count: 0
