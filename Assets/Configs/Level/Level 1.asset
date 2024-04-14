@@ -16,21 +16,14 @@ MonoBehaviour:
     type: 2}
   left_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: fbcc9fb283c888c4780e54234e436eb8, type: 2}
-    spawn_config:
-      spawn_interval: 0
-      spawn_count: 0
-      spawn_radius: 0
+    behaviour_modifier: {fileID: 11400000, guid: 4a50ece475a8ae24d8e0884680fba5ca,
+      type: 2}
     max_use_duration: 10
     reload_delay: 1
     reload_speed: 2
   right_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: 433d1019c909d5a4f9a4ee1d192f3c73, type: 2}
-    spawn_config:
-      spawn_interval: 0
-      spawn_count: 0
-      spawn_radius: 0
+    behaviour_modifier: {fileID: 0}
     max_use_duration: 15
     reload_delay: 1
     reload_speed: 10

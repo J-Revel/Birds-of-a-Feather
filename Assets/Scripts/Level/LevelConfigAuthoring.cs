@@ -16,17 +16,15 @@ public class LevelConfigAuthoring: MonoBehaviour
             Entity entity = GetEntity(TransformUsageFlags.None);
             DependsOn(authoring.config_asset);
             DependsOn(authoring.config_asset.default_behaviour_config);
-            DependsOn(authoring.config_asset.left_click_action.behaviour_config);
-            DependsOn(authoring.config_asset.right_click_action.behaviour_config);
+            DependsOn(authoring.config_asset.left_click_action.behaviour_modifier);
+            DependsOn(authoring.config_asset.right_click_action.behaviour_modifier);
             AddComponent<LevelConfig>(entity, new LevelConfig
             {
                 default_behaviour_config = authoring.config_asset.default_behaviour_config.Bake(),
-                left_behaviour_config = authoring.config_asset.left_click_action.behaviour_config.Bake(),
-                right_behaviour_config = authoring.config_asset.right_click_action.behaviour_config.Bake(),
+                left_behaviour_modifier = authoring.config_asset.left_click_action.behaviour_modifier.Bake(),
+                right_behaviour_modifier = authoring.config_asset.right_click_action.behaviour_modifier.Bake(),
                 left_action_type = authoring.config_asset.left_click_action.action_type,
                 right_action_type = authoring.config_asset.right_click_action.action_type,
-                left_spawn_config = authoring.config_asset.left_click_action.spawn_config,
-                right_spawn_config = authoring.config_asset.right_click_action.spawn_config,
                 left_use_duration = authoring.config_asset.left_click_action.max_use_duration,
                 right_use_duration = authoring.config_asset.right_click_action.max_use_duration,
                 camera_size = authoring.config_asset.camera_size,
@@ -54,8 +52,7 @@ public struct SpawnBoidConfig
 public struct PlayerActionConfig
 {
     public PlayerActionType action_type;
-    public BoidBehaviourConfigAsset behaviour_config;
-    public SpawnBoidConfig spawn_config;
+    public BoidBehaviourModifierAsset behaviour_modifier;
     public float max_use_duration;
     public float reload_delay;
     public float reload_speed;
@@ -65,12 +62,9 @@ public struct LevelConfig: IComponentData
 {
     public BoidBehaviourConfig default_behaviour_config;
     public PlayerActionType left_action_type;
-    public BoidBehaviourConfig left_behaviour_config;
     public BoidBehaviourModifier left_behaviour_modifier;
-    public SpawnBoidConfig left_spawn_config;
     public PlayerActionType right_action_type;
-    public BoidBehaviourConfig right_behaviour_config;
-    public SpawnBoidConfig right_spawn_config;
+    public BoidBehaviourModifier right_behaviour_modifier;
     public float left_use_duration;
     public float right_use_duration;
     public float left_reload_delay;
@@ -105,7 +99,6 @@ public partial class PlayerInputSystem: SystemBase
             state.using_left = true;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
-                command_buffer.SetComponent<BoidBehaviourModifier>(entity, level_config.left_behaviour_modifier);
                 command_buffer.SetComponent<BoidConfig>(entity,
                     new BoidConfig
                     {
@@ -124,7 +117,9 @@ public partial class PlayerInputSystem: SystemBase
                 state.using_left = false;
                 foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
                 {
-                    command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.default_behaviour_config });
+                    command_buffer.SetComponent<BoidConfig>(
+                        entity, 
+                        new BoidConfig { config = level_config.default_behaviour_config });
                 }
             }
         }
@@ -134,7 +129,14 @@ public partial class PlayerInputSystem: SystemBase
             state.using_right = true;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
-                command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.right_behaviour_config });
+                command_buffer.SetComponent<BoidConfig>(
+                    entity,
+                    new BoidConfig
+                    {
+                        config = BoidBehaviourConfigAsset.ConvertFromModifier(
+                            level_config.default_behaviour_config,
+                            level_config.right_behaviour_modifier),
+                    });
             }
         }
         if(state.using_right)

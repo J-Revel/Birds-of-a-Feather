@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radius: 0
   speed: 20
+  random_turn_force: 0.01
+  turn_variation_speed: 0
   attraction_force: 3
   attraction_range: 7.071068
   repulsion_force: 54.2
