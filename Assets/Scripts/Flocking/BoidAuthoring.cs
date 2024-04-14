@@ -80,6 +80,11 @@ public struct BoidConfig: IComponentData
     public BoidBehaviourConfig config;
 }
 
+public struct BoidActiveBehaviour: IComponentData
+{
+    public BoidBehaviourModifier modifier;
+}
+
 public struct BoidState : IComponentData
 {
     public float2 velocity;
@@ -87,6 +92,12 @@ public struct BoidState : IComponentData
     public float4 start_color;
     public float4 target_color;
     public float color_transition_time;
+    public float turn_position;
+}
+
+public struct BoidRandom: IComponentData
+{
+    public Unity.Mathematics.Random random;
 }
 
 public struct BoidPartitionCell : IComponentData
@@ -130,14 +141,17 @@ public partial class BoidMovementSystem : SystemBase
     public class Singleton : IComponentData
     {
         public NativeParallelMultiHashMap<int2, Entity> partition_grid;
-
+        public Unity.Mathematics.Random random;
     }
 
     protected override void OnCreate()
     {
         base.OnCreate();
-        EntityManager.CreateSingleton<Singleton>(new Singleton { 
+        RequireForUpdate<GlobalConfig>();
+        EntityManager.CreateSingleton<Singleton>(new Singleton
+        {
             partition_grid = new NativeParallelMultiHashMap<int2, Entity>(4096 * 4, Allocator.Persistent),
+            random = new Unity.Mathematics.Random((uint)(System.DateTime.Now.TimeOfDay.TotalSeconds * 100 + SystemAPI.Time.ElapsedTime * 100)),
         });
     }
 
@@ -151,19 +165,31 @@ public partial class BoidMovementSystem : SystemBase
         partition_grid.Clear();
         NativeParallelMultiHashMap<int2, Entity> partition = partition_grid;
         NativeParallelMultiHashMap<int2, Entity> wall_partition = SystemAPI.ManagedAPI.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid;
+        EntityQuery query = Entities.WithNone<BoidRandom>().WithAll<BoidState>().ToQuery();
+
+
+        EntityCommandBuffer command_buffer = new EntityCommandBuffer(Allocator.Temp);
+        foreach(Entity entity in query.ToEntityArray(Allocator.Temp))
+        {
+            command_buffer.AddComponent<BoidRandom>(entity, new BoidRandom { 
+                random = new Unity.Mathematics.Random((uint)(System.DateTime.Now.TimeOfDay.TotalSeconds * 100 + SystemAPI.Time.ElapsedTime * 100 + entity.Index * 128)),
+            });
+        }
+        command_buffer.Playback(EntityManager);
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
             .WithNone<BoidPartitionCell>()
-            .ForEach((EntityCommandBuffer command_buffer, Entity entity, in LocalTransform transform, in BoidState state, in BoidConfig config) =>
+            .ForEach((EntityCommandBuffer command_buffer, Entity entity, 
+                in LocalTransform transform, in BoidState state, in BoidConfig config) =>
             {
                 int2 cell_min = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
                 int2 cell_max = (int2)((transform.Position.xz + config.config.radius) / boids_partition_size);
-
 
                 command_buffer.AddComponent<BoidPartitionCell>(entity, new BoidPartitionCell {
                     min_partition = cell_min,
                     max_partition = cell_max,
                 });
+
                 for(int i=cell_min.x; i<=cell_max.x; i++)
                 {
                     for(int j=cell_min.y; j<=cell_max.y; j++)
@@ -245,11 +271,12 @@ public partial class BoidMovementSystem : SystemBase
         mouse_pos_screen.z = 10;
         float2 mouse_position = ((float3)Camera.main.ScreenToWorldPoint(mouse_pos_screen)).xz;
 
+        Singleton singleton = SystemAPI.ManagedAPI.GetSingleton<Singleton>();
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
             .WithReadOnly(wall_partition)
-            .ForEach((Entity entity, ref BoidState state, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
+            .ForEach((Entity entity, int entityInQueryIndex, ref BoidState state, ref BoidRandom random_component, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
             {
                 state.acceleration = new float2();
                 float2 position = transform.Position.xz;
@@ -258,6 +285,7 @@ public partial class BoidMovementSystem : SystemBase
                 int2 min_partition = (int2)((position - config.config.radius - max_range) / boids_partition_size);
                 int2 max_partition = (int2)((position + config.config.radius + max_range) / boids_partition_size);
                 NativeHashSet<Entity> handled_neighbours = new NativeHashSet<Entity>(64, Allocator.Temp);
+                
                 
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
@@ -280,7 +308,8 @@ public partial class BoidMovementSystem : SystemBase
                             }
                             if (distancesq < active_repulsion_range * active_repulsion_range)
                             {
-                                state.acceleration += -direction * config.config.repulsion_force;
+                                float ratio = 1 - (math.sqrt(distancesq / active_repulsion_range / active_repulsion_range));
+                                state.acceleration += -direction * config.config.repulsion_force * ratio * ratio;
                             }
                         }
                     }
@@ -298,10 +327,11 @@ public partial class BoidMovementSystem : SystemBase
                             if (wall_entity == entity)
                                 continue;
                             ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity);
-                            float distance = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
-                            if (distance < config.config.wall_repulsion_range)
+                            float distancesq = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
+                            if (distancesq < config.config.wall_repulsion_range)
                             {
-                                state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force;
+                                float ratio = 1 - (math.sqrt(distancesq / config.config.wall_repulsion_range/ config.config.wall_repulsion_range));
+                                state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force * ratio;
                             }
                         }
                     }
@@ -312,6 +342,9 @@ public partial class BoidMovementSystem : SystemBase
                 float3 cross = math.normalizesafe(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
                 float3 force_direction = math.cross(cross, velocity_3D);
                 state.velocity += force_direction.xz * config.config.mouse_attraction_force;
+                state.turn_position += random_component.random.NextFloat(-1, 1) * config.config.turn_variation_speed;
+                state.turn_position = math.clamp(state.turn_position, -1, 1);
+                state.velocity += force_direction.xz * state.turn_position * config.config.random_turn_force;
 
                 state.velocity = state.velocity + state.acceleration * dt;
                 var targetvelocity = math.normalize(state.velocity) * config.config.speed;

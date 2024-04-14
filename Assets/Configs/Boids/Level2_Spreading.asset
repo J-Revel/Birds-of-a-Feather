@@ -10,17 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3f5d3488192424a9174ef3ca841575, type: 3}
-  m_Name: Level3Default 1
+  m_Name: Level2_Spreading
   m_EditorClassIdentifier: 
   radius: 0
-  speed: 40
-  attraction_force: 20
-  attraction_range: 8.944272
-  repulsion_force: 80
-  repulsion_range: 5.477226
+  speed: 18
+  random_turn_force: 0.1
+  turn_variation_speed: 0
+  attraction_force: 0
+  attraction_range: 6.324555
+  repulsion_force: 40
+  repulsion_range: 20
   neighbour_detection_range: 10
-  align_force: 20
+  align_force: 5
   mouse_attraction_force: 0
   wall_repulsion_range: 5
   wall_repulsion_force: 1000
-  color: {r: 0.28235295, g: 0.023529412, b: 0.09803922, a: 1}
+  color: {r: 0.86274517, g: 0.5647059, b: 0.227451, a: 1}

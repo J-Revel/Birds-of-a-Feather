@@ -20,6 +20,11 @@ public struct BehaviourZone: IComponentData
 [UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateBefore(typeof(BoidMovementSystem))]
 public partial class BehaviourZoneSystem: SystemBase
 {
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+        RequireForUpdate<GlobalConfig>();
+    }
     protected override void OnUpdate()
     {
         NativeParallelMultiHashMap<Unity.Mathematics.int2, Entity> partition_grid = SystemAPI.ManagedAPI.GetSingleton<BoidMovementSystem.Singleton>().partition_grid;
