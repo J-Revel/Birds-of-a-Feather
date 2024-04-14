@@ -43,6 +43,28 @@ public class BoidBehaviourConfigAsset : ScriptableObject
             color = new float4(color.r, color.g, color.b, color.a),
         };
     }
+
+
+    public static BoidBehaviourConfig ConvertFromModifier(BoidBehaviourConfig config, BoidBehaviourModifier modifier)
+    {
+        return new BoidBehaviourConfig
+        {
+            radius = config.radius,
+            speed = config.speed,
+            random_turn_force = config.random_turn_force * modifier.random_turn_force_multiplier,
+            turn_variation_speed = config.turn_variation_speed * modifier.turn_variation_speed_multiplier,
+            attraction_force = config.attraction_force,
+            attraction_range = config.attraction_range,
+            repulsion_force = config.repulsion_force,
+            repulsion_range = config.repulsion_range,
+            neighbour_detection_range = config.neighbour_detection_range,
+            align_force = config.align_force,
+            mouse_attraction_force = config.mouse_attraction_force,
+            wall_repulsion_force = config.wall_repulsion_force,
+            wall_repulsion_range = config.wall_repulsion_range,
+            color = config.color,
+        };
+    }
 }
 
 public struct BoidBehaviourConfig
