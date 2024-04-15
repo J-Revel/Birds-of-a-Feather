@@ -58,7 +58,7 @@ public partial class BoidSpawnerUpdateSystem : SystemBase
             .ForEach((EntityCommandBuffer command_buffer, ref BoidSpawner spawner, in LocalTransform transform) =>
             {
                 spawner.time += dt;
-                if (spawner.time > spawner.interval && spawner.countspawn <= spawner.maxspawn)
+                if (spawner.time > spawner.interval && spawner.countspawn < spawner.maxspawn)
                 {
                     spawner.countspawn++;
                     spawner.time -= spawner.interval;

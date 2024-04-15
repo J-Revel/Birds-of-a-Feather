@@ -23,7 +23,8 @@ MonoBehaviour:
     reload_speed: 2
   right_click_action:
     action_type: 0
-    behaviour_modifier: {fileID: 0}
+    behaviour_modifier: {fileID: 11400000, guid: f4343f20a929c6049a90b0810322f7da,
+      type: 2}
     max_use_duration: 15
     reload_delay: 1
     reload_speed: 10
