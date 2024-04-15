@@ -2,8 +2,10 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
@@ -11,6 +13,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using static Unity.Entities.SystemBaseDelegates;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.HableCurve;
 
 //[MaterialProperty("_Color")]
 public struct BoidColor : IComponentData
@@ -93,6 +96,7 @@ public struct BoidState : IComponentData
     public float4 target_color;
     public float color_transition_time;
     public float turn_position;
+    public bool finished;
 }
 
 public struct BoidRandom: IComponentData
@@ -264,14 +268,13 @@ public partial class BoidMovementSystem : SystemBase
                 {
                     neighbour_data.average_velocity = neighbour_velocity_sum / neighbour_count;
                     neighbour_data.neighbour_count = neighbour_count;
-
-            }
+                }
         }).ScheduleParallel();
         float3 mouse_pos_screen = (float3)Input.mousePosition;
         mouse_pos_screen.z = 10;
         float2 mouse_position = ((float3)Camera.main.ScreenToWorldPoint(mouse_pos_screen)).xz;
 
-        Singleton singleton = SystemAPI.ManagedAPI.GetSingleton<Singleton>();
+        // Singleton singleton = SystemAPI.ManagedAPI.GetSingleton<Singleton>();
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
@@ -317,7 +320,6 @@ public partial class BoidMovementSystem : SystemBase
                 max_range = config.config.wall_repulsion_range;
                 min_partition = (int2)((position - max_range) / collider_partition_size);
                 max_partition = (int2)((position + max_range) / collider_partition_size);
-                
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
@@ -326,16 +328,37 @@ public partial class BoidMovementSystem : SystemBase
                         {
                             if (wall_entity == entity)
                                 continue;
+
                             ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity);
+                            if (segment.isTarget)
+                            {
+                                continue;
+                            }
                             float distancesq = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
                             if (distancesq < config.config.wall_repulsion_range)
                             {
-                                float ratio = 1 - (math.sqrt(distancesq / config.config.wall_repulsion_range/ config.config.wall_repulsion_range));
+                                float ratio = 1 - (math.sqrt(distancesq / config.config.wall_repulsion_range / config.config.wall_repulsion_range));
                                 state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force * ratio;
                             }
                         }
                     }
                 }
+
+                var finished = 0f;
+                foreach (var wall_entity in wall_partition)
+                {
+                    ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity.Value);
+                    if (segment.isTarget)
+                    {
+                        finished += segment.WeightIfCounterClockwise(new float3(position.x, 0, position.y));
+                        continue;
+                    }
+                    
+                }
+                 
+                if (finished >= 0.999f)
+                    state.finished = true;
+
                 state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * config.config.align_force;
                 float2 mouse_direction = mouse_position - position;
                 float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);

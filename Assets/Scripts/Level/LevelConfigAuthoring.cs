@@ -160,6 +160,5 @@ public partial class PlayerInputSystem: SystemBase
             state.right_use_time -= math.max(0, state.right_use_time - SystemAPI.Time.DeltaTime);
         SystemAPI.SetSingleton<LevelState>(state);
         command_buffer.Playback(EntityManager);
-
     }
 }
