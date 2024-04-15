@@ -23,6 +23,7 @@ public class IngameTextSpawner : MonoBehaviour
 
     void Update()
     {
+        return;
         var entities = query.ToEntityArray(Allocator.Temp);
         var transforms = query.ToComponentDataArray<LocalTransform>(Allocator.Temp);
         var ingame_text = query.ToComponentArray<IngameTextComponent>();

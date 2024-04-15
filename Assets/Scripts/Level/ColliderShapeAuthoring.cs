@@ -74,23 +74,28 @@ public class ColliderShapeAuthoring : MonoBehaviour
                         start = xz_to_float3(A + (B - A) * splits[j]), 
                         end = xz_to_float3(A + (B - A) * splits[j + 1]),
                         partition = (int2)(partition_center / authoring.global_config.collider_partition_size),
+                        isTarget = false,
                     });
                 }
             }
         }
     }
 
-    private static float3 xz_to_float3(float2 xz)
+    public static float3 xz_to_float3(float2 xz)
     {
         return new float3(xz.x, 0, xz.y);
     }
 }
+
 
 public struct ColliderSegment: IComponentData
 {
     public float3 start;
     public float3 end;
     public int2 partition;
+    public bool isTarget;
+    public float partitionSize;
+
     public float DistanceFromPointSq(float3 position)
     {
         float3 segment_direction = end - start;
@@ -106,6 +111,12 @@ public struct ColliderSegment: IComponentData
         float3 vertical_vector = math.cross(end - start, position - start);
         
         return math.normalizesafe(math.cross(end - start, vertical_vector)); 
+    }
+
+    public float WeightIfCounterClockwise(float3 position)
+    {
+        float3 vertical_vector = math.cross(end - start, position - start);
+        return vertical_vector.y < 0 ? partitionSize : 0;
     }
 }
 

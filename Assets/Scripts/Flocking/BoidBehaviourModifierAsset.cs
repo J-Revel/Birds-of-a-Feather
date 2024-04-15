@@ -10,18 +10,18 @@ public class BoidBehaviourModifierAsset : ScriptableObject
     public float speed_change = 0;
     public float random_turn_force_multiplier = 1;
     public float turn_variation_speed_multiplier = 1;
-    public float attraction_force_offset = 1;
+    public float attraction_force_offset = 0;
     public float attraction_range_multiplier = 1;
-    public float repulsion_force_offset = 1;
+    public float repulsion_force_offset = 0;
     public float repulsion_range_multiplier = 1;
 
     public float neighbour_detection_range_multiplier = 1;
-    public float align_force_offset = 1;
+    public float align_force_offset = 0;
 
-    public float mouse_attraction_force_offset = 1;
+    public float mouse_attraction_force_offset = 0;
 
     public float wall_repulsion_range_multiplier = 1;
-    public float wall_repulsion_force_offset = 1;
+    public float wall_repulsion_force_offset = 0;
 
     public Color color;
 
