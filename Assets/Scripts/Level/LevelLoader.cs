@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Entities.Serialization;
 using Unity.Scenes;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,6 +24,7 @@ public class LevelLoader : MonoBehaviour
 
     void Update()
     {
+
     }
 
     public void LoadLevel(int level_index)
@@ -60,6 +62,5 @@ public class LevelLoader : MonoBehaviour
         if(active_scene_entity != Entity.Null)
             SceneSystem.UnloadScene(World.DefaultGameObjectInjectionWorld.Unmanaged, active_scene_entity);
         active_scene_entity = Entity.Null;
-
     }
 }

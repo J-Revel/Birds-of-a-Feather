@@ -13,6 +13,7 @@ public class BoidSpawnerAuthoring : MonoBehaviour
     public int countspawn = 0;
     public float angle_range = 30;
     public BoidAuthoring prefab;
+    public int levelcompleteboids = 1;
 
     public class Baker : Baker<BoidSpawnerAuthoring>
     {
@@ -27,6 +28,7 @@ public class BoidSpawnerAuthoring : MonoBehaviour
                 time = 0,
                 random = new Unity.Mathematics.Random(10),
                 maxspawn = authoring.maxspawn,
+                levelcompleteboids = authoring.levelcompleteboids,
             });
         }
     }
@@ -41,6 +43,7 @@ public struct BoidSpawner : IComponentData
     public Unity.Mathematics.Random random;
     public int maxspawn;
     public int countspawn;
+    public int levelcompleteboids;
 }
 
 public partial class BoidSpawnerUpdateSystem : SystemBase
@@ -76,6 +79,7 @@ public partial class BoidSpawnerUpdateSystem : SystemBase
                         config = level_config.default_behaviour_config
                     });
                 }
+
             }).Schedule();
     }
 }

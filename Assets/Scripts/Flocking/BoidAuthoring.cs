@@ -179,6 +179,25 @@ public partial class BoidMovementSystem : SystemBase
                 random = new Unity.Mathematics.Random((uint)(System.DateTime.Now.TimeOfDay.TotalSeconds * 100 + SystemAPI.Time.ElapsedTime * 100 + entity.Index * 128)),
             });
         }
+
+        var querySpawner = Entities.WithAll<BoidSpawner>().ToQuery();
+        if (querySpawner.HasSingleton<BoidSpawner>())
+        {
+            BoidSpawner spawner = querySpawner.GetSingleton<BoidSpawner>();
+            EntityQuery allboids = Entities.WithAll<BoidState>().ToQuery();
+            var boidsFinished = 0;
+            foreach (Entity entity in allboids.ToEntityArray(Allocator.Temp))
+            {
+                var state2 = SystemAPI.GetComponent<BoidState>(entity);
+                if (state2.finished) boidsFinished++;
+            }
+            if (boidsFinished >= spawner.levelcompleteboids)
+            {
+                LevelLoader.instance.UnloadScene();
+            }
+
+        }
+
         command_buffer.Playback(EntityManager);
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
@@ -274,7 +293,6 @@ public partial class BoidMovementSystem : SystemBase
         mouse_pos_screen.z = 10;
         float2 mouse_position = ((float3)Camera.main.ScreenToWorldPoint(mouse_pos_screen)).xz;
 
-        // Singleton singleton = SystemAPI.ManagedAPI.GetSingleton<Singleton>();
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
