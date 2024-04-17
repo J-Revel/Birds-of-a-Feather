@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01e0169b2ed137f40a3caab35f0b07b2, type: 3}
-  m_Name: Level 2
+  m_Name: Level 2b
   m_EditorClassIdentifier: 
   default_behaviour_config: {fileID: 11400000, guid: 6bd86502686fc3845ac0b240ed85024e,
     type: 2}
@@ -28,4 +28,4 @@ MonoBehaviour:
     max_use_duration: 6.8
     reload_delay: 1
     reload_speed: 10
-  camera_size: 150
+  camera_size: 125.6
