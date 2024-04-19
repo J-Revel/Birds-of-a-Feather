@@ -111,7 +111,7 @@ public partial class PlayerInputSystem: SystemBase
                 state.using_left = false;
                 foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
                 {
-                    command_buffer.SetComponent<BoidBehaviourModifier>(entity, new BoidBehaviourModifier { });
+                    command_buffer.SetComponent<BoidBehaviourModifier>(entity, BoidBehaviourModifier.default_modifier);
                 }
             }
         }
@@ -133,7 +133,7 @@ public partial class PlayerInputSystem: SystemBase
                 state.using_right = false;
                 foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
                 {
-                    command_buffer.SetComponent<BoidConfig>(entity, new BoidConfig { config = level_config.default_behaviour_config });
+                    command_buffer.SetComponent<BoidBehaviourModifier>(entity, BoidBehaviourModifier.default_modifier);
                 }
             }
         }

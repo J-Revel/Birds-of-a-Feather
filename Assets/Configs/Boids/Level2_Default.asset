@@ -15,14 +15,14 @@ MonoBehaviour:
   radius: 0
   speed: 15
   random_turn_force: 0
-  turn_variation_speed: 2
+  turn_variation_speed: 0
   attraction_force: 5
   attraction_range: 10
   repulsion_force: 1000
   repulsion_range: 4
-  neighbour_detection_range: 10
-  align_force: 5
+  neighbour_detection_range: 5
+  align_force: 50
   mouse_attraction_force: 0
-  wall_repulsion_range: 5
+  wall_repulsion_range: 9
   wall_repulsion_force: 1000
   color: {r: 0.28235295, g: 0.023529412, b: 0.09803922, a: 1}

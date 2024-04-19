@@ -54,6 +54,8 @@ public class LevelLoader : MonoBehaviour
         Entity singleton_entity = singleton_query.GetSingletonEntity();
         LevelLoadSystem.Singleton singleton = singleton_query.GetSingleton<LevelLoadSystem.Singleton>();
         singleton.scene_to_load = levels[active_level_index];
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
+        query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
         entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
         /*
         StopAllCoroutines();
@@ -79,6 +81,8 @@ public class LevelLoader : MonoBehaviour
         Entity singleton_entity = singleton_query.GetSingletonEntity();
         LevelLoadSystem.Singleton singleton = singleton_query.GetSingleton<LevelLoadSystem.Singleton>();
         singleton.unload = true;
+        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
+        query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
         entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
         /*
         EntityManager entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;

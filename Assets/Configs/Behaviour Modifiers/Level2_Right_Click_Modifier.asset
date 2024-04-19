@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e76338875f8d3f4a9e75fd292113389, type: 3}
+  m_Name: Level2_Right_Click_Modifier
+  m_EditorClassIdentifier: 
+  speed_change: 0
+  random_turn_force_multiplier: 1
+  turn_variation_speed_multiplier: 1
+  attraction_force_offset: 1
+  attraction_range_multiplier: 1
+  repulsion_force_offset: 1
+  repulsion_range_multiplier: 1
+  neighbour_detection_range_multiplier: 1
+  align_force_offset: 1
+  mouse_attraction_force_offset: 1
+  wall_repulsion_range_multiplier: 1
+  wall_repulsion_force_offset: 1
+  color: {r: 0.8962264, g: 0.31706125, b: 0.31706125, a: 0}
