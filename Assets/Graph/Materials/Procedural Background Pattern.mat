@@ -41,6 +41,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Blur_Textuer:
+        m_Texture: {fileID: 2800000, guid: fe5efca4a1050b54d878ef7868803d55, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -77,6 +81,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Pattern_Texture:
+        m_Texture: {fileID: 2800000, guid: c33146cdce81b9042ba9a2db468126b3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Shapes_Texture:
+        m_Texture: {fileID: 2800000, guid: a0a4ba60564f9904e97e2293af75f719, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -99,6 +111,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _Blur_Texture_Intensity: 1.13
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -115,10 +128,13 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
-    - _Noise_Scale: 0.03
+    - _Noise_Intensity: 4.23
+    - _Noise_Movement: 10
+    - _Noise_Scale: 0.01
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _Pattern_Scale: 0.47
+    - _Pattern_Scale: 1.04
+    - _Pattern_Scale_1: 1.62
     - _QueueControl: 0
     - _QueueOffset: 4
     - _ReceiveShadows: 1
@@ -127,8 +143,10 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
+    - _Step_1: 0.378
+    - _Step_2: 0.443
     - _Surface: 0
-    - _Voronoi_Density: 0.004
+    - _Voronoi_Density: 0.06
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -136,4 +154,5 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _Thresholds: {r: 0, g: 0.04, b: 0, a: 0}
   m_BuildTextureStacks: []
