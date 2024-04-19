@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e76338875f8d3f4a9e75fd292113389, type: 3}
-  m_Name: Attract To Mouse Modifier
+  m_Name: Level2_Right_Click_Modifier
   m_EditorClassIdentifier: 
   speed_change: 0
   random_turn_force_multiplier: 1

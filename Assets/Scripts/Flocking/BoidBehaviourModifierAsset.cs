@@ -7,7 +7,7 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class BoidBehaviourModifierAsset : ScriptableObject 
 {
-    public float speed_change = 0;
+    public float speed_multiplier = 1;
     public float random_turn_force_multiplier = 1;
     public float turn_variation_speed_multiplier = 1;
     public float attraction_force_offset = 0;
@@ -29,7 +29,7 @@ public class BoidBehaviourModifierAsset : ScriptableObject
     {
         return new BoidBehaviourModifier
         {
-            speed_change = speed_change,
+            speed_multiplier = speed_multiplier,
             random_turn_force_multiplier = random_turn_force_multiplier,
             turn_variation_speed_multiplier = turn_variation_speed_multiplier,
             attraction_force_offset = attraction_force_offset,
@@ -49,7 +49,7 @@ public class BoidBehaviourModifierAsset : ScriptableObject
 public struct BoidBehaviourModifier: IComponentData
 {
     public float radius;
-    public float speed_change;
+    public float speed_multiplier;
 
     public float random_turn_force_multiplier;
     public float turn_variation_speed_multiplier;
@@ -69,4 +69,14 @@ public struct BoidBehaviourModifier: IComponentData
 
     public float4 color;
 
+    public static BoidBehaviourModifier default_modifier = new BoidBehaviourModifier {
+        attraction_range_multiplier = 1,
+        neighbour_detection_range_multiplier = 1,
+        random_turn_force_multiplier = 1,
+        repulsion_range_multiplier = 1,
+        speed_multiplier = 1,
+        turn_variation_speed_multiplier = 1,
+        wall_repulsion_range_multiplier = 1,
+        color = new float4(1, 1, 1, 1),
+    };
 }

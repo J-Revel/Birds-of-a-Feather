@@ -56,6 +56,15 @@ public class BoidAuthoring : MonoBehaviour
                 config = authoring.config.Bake(),
                 color_transition_duration = authoring.color_transition_duration,
             });
+            AddComponent<BoidBehaviourModifier>(entity, new BoidBehaviourModifier
+            {
+                attraction_range_multiplier = 1,
+                neighbour_detection_range_multiplier = 1,
+                random_turn_force_multiplier = 1,
+                repulsion_range_multiplier = 1,
+                turn_variation_speed_multiplier = 1,
+                wall_repulsion_range_multiplier = 1,
+            });
             AddComponent<BoidNeighbourData>(entity);
             AddComponent<BoidDisplay>(entity, new BoidDisplay { display_scale = authoring.display_scale });
             if(authoring.controllable)
@@ -297,12 +306,27 @@ public partial class BoidMovementSystem : SystemBase
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
             .WithReadOnly(wall_partition)
-            .ForEach((Entity entity, int entityInQueryIndex, ref BoidState state, ref BoidRandom random_component, in LocalTransform transform, in BoidPartitionCell partition_cell, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
+            .ForEach((Entity entity, int entityInQueryIndex, ref BoidState state, ref BoidRandom random_component,
+                in LocalTransform transform, in BoidBehaviourModifier behaviour_modifier, in BoidConfig config, in BoidNeighbourData neighbour_data) =>
             {
                 state.acceleration = new float2();
                 float2 position = transform.Position.xz;
 
-                float max_range = math.max(config.config.attraction_range, config.config.repulsion_range);
+
+                float attraction_range = config.config.attraction_range * behaviour_modifier.attraction_range_multiplier;
+                float repulsion_range = config.config.repulsion_range * behaviour_modifier.repulsion_range_multiplier;
+                float wall_repulsion_range = config.config.wall_repulsion_range * behaviour_modifier.wall_repulsion_range_multiplier;
+                float neighbour_detection_range = config.config.neighbour_detection_range * behaviour_modifier.neighbour_detection_range_multiplier;
+                float attraction_force = config.config.attraction_force + behaviour_modifier.attraction_force_offset;
+                float repulsion_force = config.config.repulsion_force + behaviour_modifier.repulsion_force_offset;
+                float wall_repulsion_force = config.config.wall_repulsion_force + behaviour_modifier.wall_repulsion_force_offset;
+                float align_force = config.config.align_force + behaviour_modifier.align_force_offset;
+                float mouse_attraction_force = config.config.mouse_attraction_force + behaviour_modifier.mouse_attraction_force_offset;
+                float turn_variation_speed = config.config.turn_variation_speed * behaviour_modifier.turn_variation_speed_multiplier;
+                float speed = config.config.speed * behaviour_modifier.speed_multiplier;
+                float random_turn_force = config.config.random_turn_force * behaviour_modifier.random_turn_force_multiplier;
+
+                float max_range = math.max(attraction_range, repulsion_range);
                 int2 min_partition = (int2)((position - config.config.radius - max_range) / boids_partition_size);
                 int2 max_partition = (int2)((position + config.config.radius + max_range) / boids_partition_size);
                 NativeHashSet<Entity> handled_neighbours = new NativeHashSet<Entity>(64, Allocator.Temp);
@@ -321,21 +345,21 @@ public partial class BoidMovementSystem : SystemBase
                             float2 neighbour_position = SystemAPI.GetComponent<LocalTransform>(neighbour_entity).Position.xz;
                             float2 direction = math.normalizesafe(neighbour_position - position);
                             float distancesq = math.distancesq(position, neighbour_position);
-                            float active_attraction_range = config.config.attraction_range + config.config.radius + neighbour_config.config.radius;
-                            float active_repulsion_range = config.config.repulsion_range + config.config.radius + neighbour_config.config.radius;
+                            float active_attraction_range = attraction_range + config.config.radius + neighbour_config.config.radius;
+                            float active_repulsion_range = repulsion_range + config.config.radius + neighbour_config.config.radius;
                             if (distancesq < active_attraction_range * active_attraction_range)
                             {
-                                state.acceleration += direction * config.config.attraction_force;
+                                state.acceleration += direction * attraction_force;
                             }
                             if (distancesq < active_repulsion_range * active_repulsion_range)
                             {
                                 float ratio = 1 - (math.sqrt(distancesq / active_repulsion_range / active_repulsion_range));
-                                state.acceleration += -direction * config.config.repulsion_force * ratio * ratio;
+                                state.acceleration += -direction * repulsion_force * ratio * ratio;
                             }
                         }
                     }
                 }
-                max_range = config.config.wall_repulsion_range;
+                max_range = wall_repulsion_range;
                 min_partition = (int2)((position - max_range) / collider_partition_size);
                 max_partition = (int2)((position + max_range) / collider_partition_size);
                 for (int i = min_partition.x; i <= max_partition.x; i++)
@@ -353,10 +377,10 @@ public partial class BoidMovementSystem : SystemBase
                                 continue;
                             }
                             float distancesq = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
-                            if (distancesq < config.config.wall_repulsion_range)
+                            if (distancesq < wall_repulsion_range)
                             {
-                                float ratio = 1 - (math.sqrt(distancesq / config.config.wall_repulsion_range / config.config.wall_repulsion_range));
-                                state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * config.config.wall_repulsion_force * ratio;
+                                float ratio = 1 - (math.sqrt(distancesq / wall_repulsion_range/ wall_repulsion_range));
+                                state.acceleration -= segment.CollisionNormal(new float3(position.x, 0, position.y)).xz * wall_repulsion_force * ratio;
                             }
                         }
                     }
@@ -382,13 +406,13 @@ public partial class BoidMovementSystem : SystemBase
                 float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);
                 float3 cross = math.normalizesafe(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));
                 float3 force_direction = math.cross(cross, velocity_3D);
-                state.velocity += force_direction.xz * config.config.mouse_attraction_force;
-                state.turn_position += random_component.random.NextFloat(-1, 1) * config.config.turn_variation_speed;
+                state.velocity += force_direction.xz * mouse_attraction_force;
+                state.turn_position += random_component.random.NextFloat(-1, 1) * turn_variation_speed;
                 state.turn_position = math.clamp(state.turn_position, -1, 1);
-                state.velocity += force_direction.xz * state.turn_position * config.config.random_turn_force;
+                state.velocity += force_direction.xz * state.turn_position * random_turn_force;
 
                 state.velocity = state.velocity + state.acceleration * dt;
-                var targetvelocity = math.normalize(state.velocity) * config.config.speed;
+                var targetvelocity = math.normalize(state.velocity) * speed;
                 state.velocity = (new float2(0.9) * state.velocity + new float2(0.1) * targetvelocity);
             }).ScheduleParallel();
     }
