@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Default Behaviour
   m_EditorClassIdentifier: 
   radius: 0
-  speed: 15
-  random_turn_force: 0
+  speed: 20
+  random_turn_force: 0.01
   turn_variation_speed: 0
   attraction_force: 3
-  attraction_range: 20
+  attraction_range: 7.071068
   repulsion_force: 54.2
   repulsion_range: 5
   neighbour_detection_range: 10

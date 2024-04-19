@@ -2,8 +2,10 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
@@ -11,6 +13,7 @@ using UnityEditor.Rendering;
 using UnityEngine;
 using static Unity.Entities.SystemBaseDelegates;
 using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.Rendering.HableCurve;
 
 //[MaterialProperty("_Color")]
 public struct BoidColor : IComponentData
@@ -102,6 +105,7 @@ public struct BoidState : IComponentData
     public float4 target_color;
     public float color_transition_time;
     public float turn_position;
+    public bool finished;
 }
 
 public struct BoidRandom: IComponentData
@@ -184,6 +188,25 @@ public partial class BoidMovementSystem : SystemBase
                 random = new Unity.Mathematics.Random((uint)(System.DateTime.Now.TimeOfDay.TotalSeconds * 100 + SystemAPI.Time.ElapsedTime * 100 + entity.Index * 128)),
             });
         }
+
+        var querySpawner = Entities.WithAll<BoidSpawner>().ToQuery();
+        if (querySpawner.HasSingleton<BoidSpawner>())
+        {
+            BoidSpawner spawner = querySpawner.GetSingleton<BoidSpawner>();
+            EntityQuery allboids = Entities.WithAll<BoidState>().ToQuery();
+            var boidsFinished = 0;
+            foreach (Entity entity in allboids.ToEntityArray(Allocator.Temp))
+            {
+                var state2 = SystemAPI.GetComponent<BoidState>(entity);
+                if (state2.finished) boidsFinished++;
+            }
+            if (boidsFinished >= spawner.levelcompleteboids)
+            {
+                LevelLoader.instance.UnloadScene();
+            }
+
+        }
+
         command_buffer.Playback(EntityManager);
 
         Entities.WithDeferredPlaybackSystem<EndFixedStepSimulationEntityCommandBufferSystem>()
@@ -273,14 +296,12 @@ public partial class BoidMovementSystem : SystemBase
                 {
                     neighbour_data.average_velocity = neighbour_velocity_sum / neighbour_count;
                     neighbour_data.neighbour_count = neighbour_count;
-
-            }
+                }
         }).ScheduleParallel();
         float3 mouse_pos_screen = (float3)Input.mousePosition;
         mouse_pos_screen.z = 10;
         float2 mouse_position = ((float3)Camera.main.ScreenToWorldPoint(mouse_pos_screen)).xz;
 
-        Singleton singleton = SystemAPI.ManagedAPI.GetSingleton<Singleton>();
         Entities
             .WithName("Attraction_Repulsion")
             .WithReadOnly(partition)
@@ -341,7 +362,6 @@ public partial class BoidMovementSystem : SystemBase
                 max_range = wall_repulsion_range;
                 min_partition = (int2)((position - max_range) / collider_partition_size);
                 max_partition = (int2)((position + max_range) / collider_partition_size);
-                
                 for (int i = min_partition.x; i <= max_partition.x; i++)
                 {
                     for (int j = min_partition.y; j <= max_partition.y; j++)
@@ -350,7 +370,12 @@ public partial class BoidMovementSystem : SystemBase
                         {
                             if (wall_entity == entity)
                                 continue;
+
                             ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity);
+                            if (segment.isTarget)
+                            {
+                                continue;
+                            }
                             float distancesq = segment.DistanceFromPointSq(new float3(position.x, 0, position.y));
                             if (distancesq < wall_repulsion_range)
                             {
@@ -360,7 +385,23 @@ public partial class BoidMovementSystem : SystemBase
                         }
                     }
                 }
-                state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * align_force;
+
+                var finished = 0f;
+                foreach (var wall_entity in wall_partition)
+                {
+                    ColliderSegment segment = SystemAPI.GetComponent<ColliderSegment>(wall_entity.Value);
+                    if (segment.isTarget)
+                    {
+                        finished += segment.WeightIfCounterClockwise(new float3(position.x, 0, position.y));
+                        continue;
+                    }
+                    
+                }
+                 
+                if (finished >= 0.999f)
+                    state.finished = true;
+
+                state.acceleration += math.normalizesafe(neighbour_data.average_velocity) * config.config.align_force;
                 float2 mouse_direction = mouse_position - position;
                 float3 velocity_3D = new float3(state.velocity.x, 0, state.velocity.y);
                 float3 cross = math.normalizesafe(math.cross(velocity_3D, new float3(mouse_direction.x, 0, mouse_direction.y)));

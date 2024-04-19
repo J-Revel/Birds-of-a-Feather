@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1934508054069065782}
   - component: {fileID: 2514182970756095489}
   m_Layer: 5
-  m_Name: paused (esc)
+  m_Name: paused
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,12 +65,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'paused.
-
-    press (esc)'
+  m_text: paused.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a3258b6bf777abc4d816ea6df4a173c3, type: 2}
-  m_sharedMaterial: {fileID: 1278961319704127741, guid: c2db5716482f81e44b592afdf19e080e,
+  m_sharedMaterial: {fileID: 306820904469202649, guid: a3258b6bf777abc4d816ea6df4a173c3,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -131,9 +129,9 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 16.697266}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}

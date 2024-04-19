@@ -10,20 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01e0169b2ed137f40a3caab35f0b07b2, type: 3}
-  m_Name: Level 2
+  m_Name: Level 2b
   m_EditorClassIdentifier: 
   default_behaviour_config: {fileID: 11400000, guid: 6bd86502686fc3845ac0b240ed85024e,
     type: 2}
   left_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: 4a50ece475a8ae24d8e0884680fba5ca, type: 2}
+    behaviour_modifier: {fileID: 11400000, guid: 4a50ece475a8ae24d8e0884680fba5ca,
+      type: 2}
     max_use_duration: 5.38
     reload_delay: 1.17
     reload_speed: 2
   right_click_action:
     action_type: 0
-    behaviour_config: {fileID: 11400000, guid: 818eb0563255b0f46ab827cf5eb7fc74, type: 2}
+    behaviour_modifier: {fileID: 11400000, guid: f4343f20a929c6049a90b0810322f7da,
+      type: 2}
     max_use_duration: 6.8
     reload_delay: 1
     reload_speed: 10
-  camera_size: 150
+  camera_size: 125.6
