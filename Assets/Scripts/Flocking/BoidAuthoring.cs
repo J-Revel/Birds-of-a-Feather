@@ -148,7 +148,7 @@ public partial class BoidDisplaySystem : SystemBase
     }
 }
 
-[UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateAfter(typeof(BehaviourZoneSystem))]
+[UpdateInGroup(typeof(FixedStepSimulationSystemGroup)), UpdateAfter(typeof(SuccessZoneSystem))]
 public partial class BoidMovementSystem : SystemBase
 {
     public class Singleton : IComponentData

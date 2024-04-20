@@ -482,6 +482,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518562431031643479e233d0ed05d3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  to_render_texture: 0
+  render_texture_materials: []
+  render_texture_shader_param: 
 --- !u!1 &355118903 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2251777072928574918, guid: 930c4be681b9aee4b8321f2d22ae462d,
@@ -1398,7 +1401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -1493,6 +1496,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518562431031643479e233d0ed05d3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  to_render_texture: 1
+  render_texture_materials:
+  - {fileID: 2100000, guid: 90e91d411868eff49b658548663e92d5, type: 2}
+  render_texture_shader_param: _Mask_Texture
 --- !u!1 &1306154291
 GameObject:
   m_ObjectHideFlags: 0

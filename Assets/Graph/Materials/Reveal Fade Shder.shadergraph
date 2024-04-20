@@ -343,10 +343,10 @@
     "m_Guid": {
         "m_GuidSerialized": "1cd4f7f1-409b-4581-9435-853b5b682837"
     },
-    "m_Name": "Texture",
+    "m_Name": "_Mask_Texture",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Texture",
-    "m_DefaultReferenceName": "_Texture",
+    "m_RefNameGeneratedByDisplayName": "_Mask_Texture",
+    "m_DefaultReferenceName": "_Mask_Texture",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -1951,7 +1951,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "d2f191582c914efd8c296222e6055a9e",
     "m_Id": 0,
-    "m_DisplayName": "Texture",
+    "m_DisplayName": "_Mask_Texture",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
