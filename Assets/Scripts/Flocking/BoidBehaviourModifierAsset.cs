@@ -41,7 +41,7 @@ public class BoidBehaviourModifierAsset : ScriptableObject
             mouse_attraction_force_offset  = mouse_attraction_force_offset,
             wall_repulsion_force_offset  = wall_repulsion_force_offset,
             wall_repulsion_range_multiplier  = wall_repulsion_range_multiplier,
-            color = new float4(color.r, color.g, color.b, color.a),
+            color = color,
         };
     }
 }
@@ -67,7 +67,7 @@ public struct BoidBehaviourModifier: IComponentData
     public float wall_repulsion_range_multiplier;
     public float wall_repulsion_force_offset;
 
-    public float4 color;
+    public Color color;
 
     public static BoidBehaviourModifier default_modifier = new BoidBehaviourModifier {
         attraction_range_multiplier = 1,
@@ -77,6 +77,6 @@ public struct BoidBehaviourModifier: IComponentData
         speed_multiplier = 1,
         turn_variation_speed_multiplier = 1,
         wall_repulsion_range_multiplier = 1,
-        color = new float4(1, 1, 1, 1),
+        color = Color.white,
     };
 }

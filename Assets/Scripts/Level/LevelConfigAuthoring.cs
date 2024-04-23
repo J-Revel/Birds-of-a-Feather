@@ -80,6 +80,7 @@ public struct LevelState: IComponentData
     public float right_reload_delay;
     public bool using_left;
     public bool using_right;
+    public BoidBehaviourModifier current_modifier;
 }
 
 public partial class PlayerInputSystem: SystemBase
@@ -97,6 +98,7 @@ public partial class PlayerInputSystem: SystemBase
         if (Input.GetMouseButtonDown(0) && state.left_use_time < level_config.left_use_duration)
         {
             state.using_left = true;
+            state.current_modifier = level_config.left_behaviour_config;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidBehaviourModifier>(entity, level_config.left_behaviour_config);
@@ -109,6 +111,7 @@ public partial class PlayerInputSystem: SystemBase
             if (!Input.GetMouseButton(0) || (state.using_left && state.left_use_time >= level_config.left_use_duration))
             {
                 state.using_left = false;
+                state.current_modifier = BoidBehaviourModifier.default_modifier;
                 foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
                 {
                     command_buffer.SetComponent<BoidBehaviourModifier>(entity, BoidBehaviourModifier.default_modifier);
@@ -119,6 +122,7 @@ public partial class PlayerInputSystem: SystemBase
         if (Input.GetMouseButtonDown(1) && state.right_use_time < level_config.right_use_duration)
         {
             state.using_right = true;
+            state.current_modifier = level_config.right_behaviour_config;
             foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
             {
                 command_buffer.SetComponent<BoidBehaviourModifier>(entity, level_config.right_behaviour_config);
@@ -131,6 +135,7 @@ public partial class PlayerInputSystem: SystemBase
             if (Input.GetMouseButtonUp(1))
             {
                 state.using_right = false;
+                state.current_modifier = BoidBehaviourModifier.default_modifier;
                 foreach (Entity entity in Entities.WithAll<BoidConfig, ControllableBoidTag>().ToQuery().ToEntityArray(Allocator.Temp))
                 {
                     command_buffer.SetComponent<BoidBehaviourModifier>(entity, BoidBehaviourModifier.default_modifier);
