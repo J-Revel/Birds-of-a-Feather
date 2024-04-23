@@ -91,5 +91,19 @@ public partial class SuccessZoneSystem: SystemBase
             state.success_time = math.clamp(state.success_time, 0, zone.trigger_duration);
             material_override.Value = math.saturate(state.success_time / zone.trigger_duration);
         }).Run();
+        bool all_validated = true;
+        bool any_validated = false;
+        foreach((SuccessZoneState state, SuccessZoneConfig config) in SystemAPI.Query<SuccessZoneState, SuccessZoneConfig>())
+        {
+            if (state.success_time < config.trigger_duration)
+            {
+                all_validated = false;
+            }
+            else any_validated = true;
+        }
+        if(all_validated && any_validated)
+        {
+            LevelLoader.instance.LoadNextLevel();
+        }
     }
 }

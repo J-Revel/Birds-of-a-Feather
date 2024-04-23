@@ -10,10 +10,8 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
     public static LevelLoader instance;
-    private World level_world;
     public EntitySceneReference[] levels;
     public SystemHandle sceneSystem;
-    private Entity active_scene_entity;
     private int active_level_index = 0;
     private EntityManager entity_manager;
 
@@ -28,11 +26,7 @@ public class LevelLoader : MonoBehaviour
     {
         entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;
         singleton_query = new EntityQueryBuilder(Allocator.Temp).WithAll<LevelLoadSystem.Singleton>().Build(entity_manager);
-    }
-
-    void Update()
-    {
-        
+        LoadLevel(0);
     }
 
     public void LoadLevel(int level_index)
@@ -42,13 +36,18 @@ public class LevelLoader : MonoBehaviour
         singleton.scene_to_load = levels[level_index];
         entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
         active_level_index = level_index;
-        /*
-        StopAllCoroutines();
-        UnloadScene();
-        active_level_index = level_index;
-        StartCoroutine(LoadLevelCoroutine(level_index));
-        */
     }
+
+    public void LoadNextLevel()
+    {
+        UnloadScene();
+        Entity singleton_entity = singleton_query.GetSingletonEntity();
+        LevelLoadSystem.Singleton singleton = singleton_query.GetSingleton<LevelLoadSystem.Singleton>();
+        active_level_index++;
+        singleton.scene_to_load = levels[active_level_index%levels.Length];
+        entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
+    }
+
     public void ReloadLevel()
     {
         Entity singleton_entity = singleton_query.GetSingletonEntity();
@@ -57,24 +56,7 @@ public class LevelLoader : MonoBehaviour
         EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
         query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
         entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
-        /*
-        StopAllCoroutines();
-        UnloadScene();
-        StartCoroutine(LoadLevelCoroutine(active_level_index));
-        */
     }
-
-    /*
-    public IEnumerator LoadLevelCoroutine(int level_index)
-    {
-
-        while (!SceneSystem.IsSceneLoaded(World.DefaultGameObjectInjectionWorld.Unmanaged, active_scene_entity))
-            yield return null;
-        while (!Input.GetKeyDown(KeyCode.Space))
-            yield return null;
-        UnloadScene();
-    }
-    */
 
     public void UnloadScene()
     {
@@ -84,14 +66,6 @@ public class LevelLoader : MonoBehaviour
         EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
         query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
         entity_manager.SetComponentData<LevelLoadSystem.Singleton>(singleton_entity, singleton);
-        /*
-        EntityManager entity_manager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        EntityQuery query = new EntityQueryBuilder(Allocator.Temp).WithAll<SegmentCollisionSystem.Singleton>().Build(entity_manager);
-        query.GetSingleton<SegmentCollisionSystem.Singleton>().partition_grid.Clear();
-        if(active_scene_entity != Entity.Null)
-            SceneSystem.UnloadScene(World.DefaultGameObjectInjectionWorld.Unmanaged, active_scene_entity);
-        active_scene_entity = Entity.Null;
-        */
     }
 }
 
