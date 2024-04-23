@@ -1499,6 +1499,7 @@ MonoBehaviour:
   to_render_texture: 1
   render_texture_materials:
   - {fileID: 2100000, guid: 90e91d411868eff49b658548663e92d5, type: 2}
+  - {fileID: 2100000, guid: bd379b32d6d6d4a439927e6299335033, type: 2}
   render_texture_shader_param: _Mask_Texture
 --- !u!1 &1306154291
 GameObject:
