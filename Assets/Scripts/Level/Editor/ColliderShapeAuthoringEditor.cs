@@ -11,6 +11,7 @@ public class ColliderShapeAuthoringEditor : Editor
         {
             EditorGUI.BeginChangeCheck();
             Vector3 new_position = Handles.PositionHandle(collider.transform.TransformPoint(collider.points[i]), Quaternion.identity);
+            new_position.y = 0;
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(collider, "Change Look At Target Position");
