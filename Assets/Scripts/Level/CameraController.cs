@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
         query = new EntityQueryBuilder(Allocator.Temp).WithAll<LevelConfig, LevelState>().Build(entity_manager);
         if(to_render_texture)
         {
-            render_texture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.R8);
+            render_texture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
             foreach(Material material in render_texture_materials)
             {
                 material.SetTexture(render_texture_shader_param, render_texture);
@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
     {
         if (to_render_texture && (render_texture.width != Screen.width || render_texture.height != Screen.height))
         {
-            render_texture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.R8);
+            render_texture = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
             foreach(Material material in render_texture_materials)
             {
                 material.SetTexture(render_texture_shader_param, render_texture);

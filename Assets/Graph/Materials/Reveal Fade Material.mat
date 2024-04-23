@@ -50,7 +50,8 @@ Material:
     - _Noise_Movement: 2.49
     - _QueueControl: 0
     - _QueueOffset: 0
-    m_Colors: []
+    m_Colors:
+    - _Multipliers: {r: 0.066, g: 0.066, b: 0.015, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1249266639351010660
 MonoBehaviour:
