@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e76338875f8d3f4a9e75fd292113389, type: 3}
   m_Name: Level2_Right_Click_Modifier
   m_EditorClassIdentifier: 
-  speed_change: 0
+  speed_multiplier: 1
   random_turn_force_multiplier: 1
   turn_variation_speed_multiplier: 1
   attraction_force_offset: 0
   attraction_range_multiplier: 1
-  repulsion_force_offset: 0
+  repulsion_force_offset: -20
   repulsion_range_multiplier: 1
   neighbour_detection_range_multiplier: 1
   align_force_offset: 0
