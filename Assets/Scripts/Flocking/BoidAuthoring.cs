@@ -190,22 +190,6 @@ public partial class BoidMovementSystem : SystemBase
         }
 
         var querySpawner = Entities.WithAll<BoidSpawner>().ToQuery();
-        if (querySpawner.HasSingleton<BoidSpawner>())
-        {
-            BoidSpawner spawner = querySpawner.GetSingleton<BoidSpawner>();
-            EntityQuery allboids = Entities.WithAll<BoidState>().ToQuery();
-            var boidsFinished = 0;
-            foreach (Entity entity in allboids.ToEntityArray(Allocator.Temp))
-            {
-                var state2 = SystemAPI.GetComponent<BoidState>(entity);
-                if (state2.finished) boidsFinished++;
-            }
-            if (boidsFinished >= spawner.levelcompleteboids)
-            {
-                LevelLoader.instance.UnloadScene();
-            }
-
-        }
 
         command_buffer.Playback(EntityManager);
 

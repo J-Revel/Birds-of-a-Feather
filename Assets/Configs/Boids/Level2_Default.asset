@@ -18,10 +18,10 @@ MonoBehaviour:
   turn_variation_speed: 0
   attraction_force: 5
   attraction_range: 10
-  repulsion_force: 1000
+  repulsion_force: 100
   repulsion_range: 4
   neighbour_detection_range: 5
-  align_force: 50
+  align_force: 10
   mouse_attraction_force: 0
   wall_repulsion_range: 9
   wall_repulsion_force: 1000
