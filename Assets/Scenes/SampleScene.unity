@@ -1815,6 +1815,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2046789315171067202, guid: 930c4be681b9aee4b8321f2d22ae462d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -42.30005
+      objectReference: {fileID: 0}
+    - target: {fileID: 2046789315171067202, guid: 930c4be681b9aee4b8321f2d22ae462d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16.599976
+      objectReference: {fileID: 0}
     - target: {fileID: 2082142826325937711, guid: 930c4be681b9aee4b8321f2d22ae462d,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1829,6 +1839,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6267060344510340975, guid: 930c4be681b9aee4b8321f2d22ae462d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -18.299805
+      objectReference: {fileID: 0}
+    - target: {fileID: 6267060344510340975, guid: 930c4be681b9aee4b8321f2d22ae462d,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16.599976
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
